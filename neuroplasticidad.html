@@ -1,0 +1,1202 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Neuroplasticidad · LIH 704</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@500;600;700&family=IBM+Plex+Sans:ital,wght@0,400;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#152029; --ink-soft:#4C5C67;
+  --paper:#F6F7F7; --paper-raised:#FFFFFF; --paper-sunken:#EAEDEE;
+  --line:#DAE0E2;
+  --petrol:#1F5C6B; --petrol-deep:#123B45;
+  --navy:#1C3A57;
+  --green:#4C8563; --green-bg:#E7EFE9;
+  --amber:#AD7C24; --amber-bg:#F3EAD4;
+  --focus:#123B45;
+  --radius-s:3px; --radius-m:7px;
+  --font-head:'IBM Plex Serif', Georgia, serif;
+  --font-body:'IBM Plex Sans', system-ui, sans-serif;
+  --font-mono:'IBM Plex Mono', monospace;
+  --content-w:1260px; --reading-w:720px; --header-h:68px;
+  color-scheme:light;
+}
+:root:not([data-theme="light"]){ @media (prefers-color-scheme: dark){
+  --ink:#E7ECEE; --ink-soft:#B7C2C7; --paper:#12171A; --paper-raised:#1C2327; --paper-sunken:#0E1214;
+  --line:#33393D; --petrol:#6FB3C2; --petrol-deep:#8FCBD8; --navy:#7FA3C4; --green:#8FC1A2; --green-bg:#1B2A20;
+  --amber:#DDB05C; --amber-bg:#2C2617; --focus:#DDB05C;
+}}
+:root[data-theme="dark"]{
+  --ink:#E7ECEE; --ink-soft:#B7C2C7; --paper:#12171A; --paper-raised:#1C2327; --paper-sunken:#0E1214;
+  --line:#33393D; --petrol:#6FB3C2; --petrol-deep:#8FCBD8; --navy:#7FA3C4; --green:#8FC1A2; --green-bg:#1B2A20;
+  --amber:#DDB05C; --amber-bg:#2C2617; --focus:#DDB05C;
+}
+*,*::before,*::after{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+@media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto;} *,*::before,*::after{animation-duration:.001ms !important; transition-duration:.001ms !important;} }
+body{margin:0; background:var(--paper); color:var(--ink); font-family:var(--font-body); font-size:1.115rem; line-height:1.65; -webkit-font-smoothing:antialiased;}
+h1,h2,h3,h4{font-family:var(--font-head); color:var(--ink); line-height:1.2; margin:0 0 .5em; font-weight:600;}
+p{margin:0 0 1.1em;}
+a{color:var(--petrol-deep);}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline:3px solid var(--focus); outline-offset:2px;}
+img{max-width:100%; display:block;}
+button{font-family:inherit; font-size:1rem; cursor:pointer;}
+table{border-collapse:collapse; width:100%;}
+code, .mono{font-family:var(--font-mono);}
+
+.skip-link{position:absolute; left:-999px; top:0; background:var(--ink); color:var(--paper); padding:.75em 1.2em; z-index:200;}
+.skip-link:focus{left:0;}
+.wrap{max-width:var(--content-w); margin:0 auto; padding:0 1.5rem;}
+
+header.site{position:sticky; top:0; z-index:100; background:color-mix(in srgb, var(--paper) 92%, transparent); backdrop-filter:blur(8px); border-bottom:1px solid var(--line); height:var(--header-h);}
+.site-bar{max-width:var(--content-w); margin:0 auto; padding:0 1.5rem; height:100%; display:flex; align-items:center; justify-content:space-between; gap:1rem;}
+.brand{display:flex; flex-direction:column; line-height:1; gap:.15rem; text-decoration:none; color:var(--ink);}
+.brand strong{font-family:var(--font-head); font-weight:600; font-size:1.15rem;}
+.brand span{font-size:.7rem; color:var(--ink-soft); font-family:var(--font-mono);}
+nav.primary{display:flex; align-items:center; gap:1.1rem; overflow-x:auto;}
+nav.primary a{font-size:.9rem; text-decoration:none; color:var(--ink-soft); font-weight:600; padding:.4rem .05rem; border-bottom:2px solid transparent; white-space:nowrap;}
+nav.primary a:hover, nav.primary a.active{color:var(--ink); border-bottom-color:var(--petrol);}
+.header-actions{display:flex; align-items:center; gap:.75rem;}
+.progress-chip{font-size:.78rem; color:var(--ink-soft); border:1px solid var(--line); border-radius:99px; padding:.3rem .75rem;}
+.progress-chip b{color:var(--petrol-deep); font-weight:700;}
+.hamburger{display:none; background:none; border:1px solid var(--line); border-radius:var(--radius-s); width:42px; height:42px; align-items:center; justify-content:center;}
+.hamburger span,.hamburger span::before,.hamburger span::after{content:""; display:block; width:20px; height:2px; background:var(--ink); position:relative;}
+.hamburger span::before{position:absolute; top:-6px;} .hamburger span::after{position:absolute; top:6px;}
+#mobileNav{display:none; position:fixed; inset:var(--header-h) 0 0 0; background:var(--paper); z-index:99; overflow-y:auto; padding:1rem 1.5rem 2rem;}
+#mobileNav.open{display:block;}
+#mobileNav a{display:block; padding:.85rem 0; font-family:var(--font-head); font-weight:600; font-size:1.1rem; color:var(--ink); text-decoration:none; border-bottom:1px solid var(--line);}
+@media (max-width:980px){ nav.primary{display:none;} .hamburger{display:flex;} .progress-chip{display:none;} }
+
+.section{padding:4.2rem 0;} .section.tight{padding:2.4rem 0;}
+.section-head{margin-bottom:2rem;}
+.kicker{font-family:var(--font-mono); font-weight:600; font-size:.78rem; letter-spacing:.04em; color:var(--petrol); margin:0 0 .5rem; text-transform:uppercase;}
+.section-head h2{font-size:clamp(1.6rem,2.2vw + .9rem,2.3rem); max-width:840px;}
+.section-head p.lede{font-size:1.08rem; color:var(--ink-soft); max-width:660px;}
+.divider{border:none; border-top:1px solid var(--line); margin:0;}
+.band-alt{background:var(--paper-raised); border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
+.band-ink{background:var(--navy); color:#EEF3F5;}
+.band-ink h1,.band-ink h2,.band-ink h3,.band-ink .kicker{color:#EEF3F5;}
+.band-ink p{color:#CBDAE1;}
+
+.btn{display:inline-flex; align-items:center; gap:.5rem; font-family:var(--font-head); font-weight:600; font-size:.98rem; padding:.8rem 1.4rem; border-radius:var(--radius-s); text-decoration:none; border:1px solid transparent;}
+.btn-primary{background:var(--petrol); color:#F3F8F8;}
+.btn-primary:hover{background:var(--petrol-deep);}
+.btn-ghost{background:transparent; border-color:var(--ink); color:var(--ink);}
+.btn-ghost:hover{background:var(--ink); color:var(--paper);}
+.btn-on-dark{background:#EEF3F5; color:var(--navy);}
+.btn-sm{padding:.5rem .95rem; font-size:.85rem;}
+
+.image-placeholder{border:1px dashed var(--line); background:var(--paper-sunken); border-radius:var(--radius-m); padding:1.6rem; font-size:.9rem; color:var(--ink-soft);}
+.image-placeholder .ip-title{font-family:var(--font-head); font-weight:600; color:var(--ink); margin-bottom:.5rem;}
+.image-placeholder dl{display:grid; grid-template-columns:80px 1fr; gap:.25rem .7rem; margin:0; font-size:.85rem;}
+.image-placeholder dt{font-family:var(--font-mono); color:var(--ink-soft);}
+.image-placeholder dd{margin:0;}
+
+.hero{padding:4rem 0 2.6rem; display:grid; grid-template-columns:1.1fr .9fr; gap:3rem; align-items:center;}
+.hero .eyebrow-word{font-family:var(--font-mono); font-weight:600; font-size:.85rem; color:var(--petrol); margin-bottom:.6rem; text-transform:uppercase; letter-spacing:.04em;}
+.hero h1{font-size:clamp(2.1rem,3vw + 1.1rem,3.1rem); max-width:14ch;}
+.hero .sub{font-family:var(--font-head); font-weight:500; font-size:clamp(1.05rem,1vw + .8rem,1.35rem); color:var(--ink-soft); max-width:28ch; margin-bottom:1.3rem;}
+.hero p.body{font-size:1.08rem; max-width:56ch;}
+.hero .cta-row{display:flex; gap:1rem; margin-top:1.3rem; flex-wrap:wrap;}
+@media (max-width:880px){ .hero{grid-template-columns:1fr; padding-top:2.2rem;} }
+.official-objective{border-left:3px solid var(--petrol); background:var(--paper-raised); padding:1.3rem 1.5rem; border-radius:0 var(--radius-m) var(--radius-m) 0; margin:2rem 0;}
+.official-objective .lbl{font-family:var(--font-mono); font-weight:600; font-size:.78rem; color:var(--petrol-deep); display:block; margin-bottom:.4rem; text-transform:uppercase;}
+.official-objective p{margin:0; font-size:1.04rem;}
+.course-meta{display:grid; grid-template-columns:repeat(6,1fr); gap:.8rem; margin:1.6rem 0;}
+.course-meta div{border:1px solid var(--line); border-radius:var(--radius-s); padding:.7rem .8rem; background:var(--paper-raised);}
+.course-meta .k{font-family:var(--font-mono); font-size:.7rem; color:var(--ink-soft); text-transform:uppercase;}
+.course-meta .v{font-family:var(--font-head); font-weight:600; font-size:1rem;}
+@media (max-width:820px){ .course-meta{grid-template-columns:repeat(3,1fr);} }
+@media (max-width:520px){ .course-meta{grid-template-columns:repeat(2,1fr);} }
+
+.flow-diagram{display:flex; align-items:stretch; gap:0; flex-wrap:wrap; margin:1.5rem 0 2rem;}
+.flow-step{flex:1 1 120px; background:var(--paper-raised); border:1px solid var(--line); border-radius:var(--radius-m); padding:1rem .95rem; min-width:110px;}
+.flow-step .num{font-family:var(--font-mono); font-weight:600; color:var(--petrol); font-size:.78rem; display:block; margin-bottom:.3rem;}
+.flow-step h4{font-size:.98rem; margin-bottom:.25rem;}
+.flow-step p{font-size:.87rem; color:var(--ink-soft); margin:0;}
+.flow-arrow{flex:0 0 auto; display:flex; align-items:center; justify-content:center; width:2rem; color:var(--ink-soft); font-size:1.2rem; font-weight:700;}
+.flow-diagram.vertical{flex-direction:column;}
+.flow-diagram.vertical .flow-arrow{width:100%; height:1.4rem; transform:rotate(90deg);}
+@media (max-width:820px){ .flow-diagram:not(.vertical){flex-direction:column;} .flow-diagram:not(.vertical) .flow-arrow{width:100%; height:1.4rem; transform:rotate(90deg);} }
+.flow-diagram.clickable .flow-step{cursor:pointer;}
+.flow-diagram.clickable .flow-step.active{border-color:var(--petrol); background:var(--paper-sunken);}
+.stage-detail{border:1px solid var(--line); border-radius:var(--radius-m); padding:1.1rem 1.3rem; background:var(--paper-raised); margin-top:1rem; font-size:.96rem;}
+
+.chainrow{display:flex; align-items:center; flex-wrap:wrap; gap:0; margin:1.3rem 0;}
+.chainrow .clink{background:var(--paper-raised); border:1px solid var(--line); border-radius:99px; padding:.5rem 1rem; font-family:var(--font-mono); font-weight:600; font-size:.82rem;}
+.chainrow .carrow{padding:0 .5rem; color:var(--ink-soft);}
+@media (max-width:820px){ .chainrow{flex-direction:column; align-items:flex-start;} .chainrow .carrow{transform:rotate(90deg); padding:.2rem 0 .2rem 1.3rem;} }
+
+.journey{display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; margin:2rem 0;}
+.journey a.jstep{display:block; text-decoration:none; color:inherit; background:var(--paper-raised); border:1px solid var(--line); border-radius:var(--radius-m); padding:1.3rem 1.2rem;}
+.journey a.jstep:hover{border-color:var(--petrol);}
+.journey .jn{font-family:var(--font-mono); font-weight:600; color:var(--petrol); font-size:.78rem; display:block; margin-bottom:.4rem;}
+.journey h3{font-size:1.05rem; margin-bottom:.3rem;}
+@media (max-width:820px){ .journey{grid-template-columns:1fr 1fr;} }
+@media (max-width:560px){ .journey{grid-template-columns:1fr;} }
+
+.hero.lesson{padding:2.3rem 0 1rem; display:block;}
+.breadcrumb{font-size:.83rem; color:var(--ink-soft); margin-bottom:.8rem;}
+.breadcrumb a{color:var(--ink-soft); text-decoration:none;}
+.unit-tag{display:inline-block; font-family:var(--font-mono); font-weight:600; font-size:.74rem; color:var(--petrol-deep); background:var(--paper-sunken); border-radius:99px; padding:.25rem .75rem; margin-bottom:.9rem; text-transform:uppercase;}
+.lesson-title{font-size:clamp(1.5rem,2.1vw+1rem,2.1rem); max-width:24ch;}
+
+.lesson-layout{display:grid; grid-template-columns:230px 1fr; gap:3rem; align-items:start;}
+@media (max-width:920px){ .lesson-layout{grid-template-columns:1fr;} }
+.lesson-rail{position:sticky; top:calc(var(--header-h) + 1.5rem);}
+.lesson-rail h5{font-family:var(--font-mono); font-size:.75rem; color:var(--ink-soft); margin:0 0 .7rem; text-transform:uppercase;}
+.rail-list{list-style:none; margin:0 0 1.4rem; padding:0; border-left:2px solid var(--line);}
+.rail-list button{display:flex; align-items:center; gap:.5rem; width:100%; text-align:left; background:none; border:none; padding:.48rem .8rem; margin-left:-2px; border-left:2px solid transparent; color:var(--ink-soft); font-size:.86rem;}
+.rail-list button:hover{color:var(--ink);}
+.rail-list button.current{border-left-color:var(--petrol); color:var(--ink); font-weight:700;}
+.rail-list button .dot{width:8px; height:8px; border-radius:50%; border:1.5px solid var(--ink-soft); flex:0 0 auto;}
+.rail-list button.done .dot{background:var(--green); border-color:var(--green);}
+@media (max-width:920px){ .lesson-rail{position:static;} .rail-list{display:flex; flex-wrap:wrap; border:none; gap:.4rem;} .rail-list button{border:1px solid var(--line); border-radius:99px; padding:.32rem .75rem;} .rail-list button.current{border-color:var(--petrol);} }
+
+.lesson-body{max-width:var(--reading-w);}
+.lesson-body h3{font-size:1.28rem; margin-top:2rem;}
+.lesson-body h4{font-size:1.05rem; margin-top:1.5rem;}
+.lesson-body ul,.lesson-body ol{padding-left:1.3rem;}
+.lesson-body li{margin-bottom:.4rem;}
+
+.learning-objective{border-left:3px solid var(--petrol); background:var(--paper-raised); padding:1.05rem 1.3rem; border-radius:0 var(--radius-m) var(--radius-m) 0; margin:1.1rem 0 1.7rem;}
+.learning-objective .lbl{font-family:var(--font-mono); font-weight:600; font-size:.78rem; color:var(--petrol-deep); display:block; margin-bottom:.3rem; text-transform:uppercase;}
+.learning-objective p{margin:0;}
+.lesson-intro{font-family:var(--font-head); font-weight:500; font-size:1.2rem; color:var(--ink); line-height:1.42; margin:1rem 0 1.5rem;}
+.key-concept{background:var(--paper-raised); border:1px solid var(--line); border-radius:var(--radius-m); padding:1.25rem 1.35rem; margin:1.4rem 0;}
+.key-concept h4{margin-top:0;}
+.definition{display:flex; gap:1rem; border-top:1px solid var(--line); padding:.9rem 0;}
+.definition .term{font-family:var(--font-head); font-weight:600; flex:0 0 32%; color:var(--petrol-deep);}
+.definition .def{margin:0; flex:1; color:var(--ink-soft);}
+@media (max-width:600px){ .definition{flex-direction:column; gap:.2rem;} .definition .term{flex:none;} }
+.example{border-left:3px solid var(--navy); background:var(--paper-raised); padding:1rem 1.25rem; margin:1.3rem 0; border-radius:0 var(--radius-m) var(--radius-m) 0;}
+.example .lbl{font-family:var(--font-mono); font-weight:600; font-size:.76rem; color:var(--navy); display:block; margin-bottom:.3rem; text-transform:uppercase;}
+.warning{background:var(--amber-bg); border:1px solid color-mix(in srgb, var(--amber) 40%, var(--line)); border-radius:var(--radius-m); padding:1.05rem 1.25rem; margin:1.4rem 0;}
+.warning .lbl{font-family:var(--font-mono); font-weight:600; color:var(--amber); display:block; margin-bottom:.3rem; font-size:.78rem; text-transform:uppercase;}
+.question{font-family:var(--font-head); font-weight:500; font-size:1.14rem; color:var(--ink); margin:1.6rem 0; padding:0 0 0 1.2rem; border-left:3px solid var(--ink-soft);}
+.limitation{background:var(--paper-sunken); border-radius:var(--radius-m); padding:1.05rem 1.25rem; margin:1.4rem 0; font-size:.98rem;}
+.limitation .lbl{font-family:var(--font-mono); font-weight:600; color:var(--ink-soft); display:block; margin-bottom:.3rem; font-size:.76rem; text-transform:uppercase;}
+
+.activity, .evidencia, .recurso{border:1px solid var(--line); border-radius:var(--radius-m); padding:1.3rem 1.4rem 1.15rem; margin:1.7rem 0; background:var(--paper-raised);}
+.activity h4, .evidencia h4, .recurso h4{margin-top:0; display:flex; align-items:center; gap:.5rem; font-size:1.05rem; font-family:var(--font-head);}
+.activity .badge, .evidencia .badge{font-family:var(--font-mono); font-size:.68rem; font-weight:700; background:var(--paper-sunken); color:var(--ink-soft); border-radius:99px; padding:.2rem .6rem;}
+.activity .field, .evidencia .field{margin-top:.8rem;}
+.activity .field .lbl, .evidencia .field .lbl{font-family:var(--font-mono); font-weight:600; font-size:.76rem; color:var(--petrol-deep); display:block; margin-bottom:.25rem; text-transform:uppercase;}
+.recurso{border-style:dashed;}
+.recurso .rstep{margin-top:.7rem;}
+.recurso .rstep .lbl{font-family:var(--font-mono); font-weight:600; font-size:.76rem; color:var(--petrol-deep); display:block; margin-bottom:.2rem; text-transform:uppercase;}
+
+.accordion{border:1px solid var(--line); border-radius:var(--radius-m); margin:1.6rem 0; overflow:hidden; background:var(--paper-raised);}
+.accordion-head{width:100%; display:flex; justify-content:space-between; align-items:center; gap:1rem; background:none; border:none; padding:1.05rem 1.25rem; text-align:left; font-family:var(--font-head); font-weight:600; font-size:1.02rem;}
+.accordion-head .chev{transition:transform .2s ease; flex:0 0 auto;}
+.accordion.open .accordion-head .chev{transform:rotate(180deg);}
+.accordion-body{max-height:0; overflow:hidden; transition:max-height .25s ease;}
+.accordion.open .accordion-body{max-height:3000px;}
+.accordion-body-inner{padding:0 1.25rem 1.25rem;}
+.accordion-claim{font-style:italic; color:var(--ink-soft); font-size:.94rem; margin-top:-.3rem; padding:0 1.25rem .7rem;}
+
+.tabs-nav{display:flex; gap:.5rem; flex-wrap:wrap; margin-bottom:1rem;}
+.tabs-nav button{border:1px solid var(--line); background:var(--paper-raised); border-radius:99px; padding:.5rem 1.1rem; font-size:.88rem; font-family:var(--font-head); font-weight:600; color:var(--ink-soft);}
+.tabs-nav button.active{border-color:var(--petrol); color:var(--ink); background:var(--paper-sunken);}
+.tab-panel{display:none; border:1px solid var(--line); border-radius:var(--radius-m); padding:1.2rem 1.3rem; background:var(--paper-raised);}
+.tab-panel.active{display:block;}
+
+.classify-wrap{margin:1.5rem 0;}
+.classify-items{display:flex; flex-wrap:wrap; gap:.6rem; margin-bottom:1.2rem;}
+.classify-items button{border:1px solid var(--line); background:var(--paper-raised); border-radius:var(--radius-s); padding:.55rem 1rem; font-size:.9rem;}
+.classify-items button.assigned{opacity:.4;}
+.classify-targets{display:grid; grid-template-columns:repeat(3,1fr); gap:1rem;}
+@media (max-width:700px){ .classify-targets{grid-template-columns:1fr;} }
+.classify-target{border:2px dashed var(--line); border-radius:var(--radius-m); padding:1rem; min-height:110px; background:var(--paper-sunken);}
+.classify-target h5{margin:0 0 .6rem; font-family:var(--font-head);}
+.classify-target .chip{display:inline-block; background:var(--paper-raised); border:1px solid var(--line); border-radius:99px; padding:.25rem .7rem; font-size:.85rem; margin:.2rem .25rem 0 0;}
+.classify-target .chip.correct{border-color:var(--green); color:var(--green);}
+.classify-target .chip.incorrect{border-color:#B23B36; color:#B23B36;}
+
+.nucleotide-demo{display:flex; gap:1.6rem; align-items:center; flex-wrap:wrap; margin:1.4rem 0;}
+.base-btns{display:flex; gap:.5rem;}
+.base-btns button{width:44px; height:44px; border-radius:50%; border:1px solid var(--line); background:var(--paper-raised); font-family:var(--font-mono); font-weight:700;}
+.base-btns button.active{background:var(--petrol); color:#fff; border-color:var(--petrol);}
+.pair-readout{font-family:var(--font-mono); font-size:1.1rem; background:var(--paper-sunken); border-radius:var(--radius-s); padding:.7rem 1.1rem;}
+
+.mutation-lab{border:1px solid var(--line); border-radius:var(--radius-m); padding:1.3rem 1.4rem; margin:1.6rem 0; background:var(--paper-raised);}
+.mutation-lab .seqrow{font-family:var(--font-mono); font-size:1.15rem; letter-spacing:.12em; display:flex; flex-wrap:wrap; gap:.15rem; margin:.8rem 0;}
+.mutation-lab .seqrow span{padding:.15rem .3rem; border-radius:3px;}
+.mutation-lab .seqrow span.codon-0{background:var(--green-bg);}
+.mutation-lab .seqrow span.codon-1{background:var(--amber-bg);}
+.mutation-lab .seqrow span.codon-2{background:var(--paper-sunken);}
+.mutation-lab .seqrow span.codon-3{background:var(--green-bg);}
+.mutation-lab .controls{display:flex; gap:.8rem; align-items:center; flex-wrap:wrap; margin:1rem 0;}
+.mutation-lab select{padding:.5rem .7rem; border:1px solid var(--line); border-radius:var(--radius-s); font-family:var(--font-mono);}
+.mutation-lab .result{border-top:1px solid var(--line); margin-top:1rem; padding-top:1rem; font-size:.98rem;}
+.mutation-lab .result b{font-family:var(--font-head);}
+
+.checklist{border:1px solid var(--line); border-radius:var(--radius-m); padding:1.15rem 1.35rem; margin:1.7rem 0; background:var(--paper-raised);}
+.checklist h4{margin-top:0; font-family:var(--font-head);}
+.checklist label{display:flex; align-items:flex-start; gap:.6rem; padding:.45rem 0; border-top:1px solid var(--line); cursor:pointer;}
+.checklist label:first-of-type{border-top:none;}
+.checklist input{margin-top:.3rem; width:17px; height:17px; flex:0 0 auto;}
+
+.pedagogical-close{margin-top:2.4rem;}
+.trio{display:grid; grid-template-columns:1fr 1fr 1fr; gap:1rem; margin:1.2rem 0 1.8rem;}
+@media (max-width:820px){ .trio{grid-template-columns:1fr;} }
+.trio > div{border:1px solid var(--line); border-radius:var(--radius-m); padding:1.1rem; background:var(--paper-raised);}
+.trio h4{margin-top:0; font-size:.98rem;}
+.trio.sabemos > div:nth-child(1){border-top:3px solid var(--green);}
+.trio.sabemos > div:nth-child(2){border-top:3px solid var(--petrol);}
+.trio.sabemos > div:nth-child(3){border-top:3px solid var(--amber);}
+
+.quiz-q{border:1px solid var(--line); border-radius:var(--radius-m); padding:1.1rem 1.25rem; margin-bottom:1rem; background:var(--paper-raised);}
+.quiz-q .opt{display:block; padding:.4rem 0;}
+.quiz-q .fb{display:none; margin-top:.6rem; font-size:.92rem; border-top:1px solid var(--line); padding-top:.6rem;}
+.quiz-q.answered .fb{display:block;}
+.quiz-q .fb.correct{color:var(--green);}
+.quiz-q .fb.incorrect{color:#B23B36;}
+
+.next-lesson{display:flex; justify-content:space-between; align-items:center; gap:1rem; margin-top:3rem; padding-top:1.5rem; border-top:1px solid var(--line); flex-wrap:wrap;}
+.next-lesson .side{display:flex; flex-direction:column; gap:.3rem;}
+.next-lesson .side small{color:var(--ink-soft); font-size:.78rem;}
+.next-lesson .side a{font-family:var(--font-head); font-weight:600; text-decoration:none; color:var(--ink); font-size:1rem;}
+.next-lesson .side.right{text-align:right; align-items:flex-end;}
+.mark-complete{display:flex; align-items:center; gap:.6rem; font-family:var(--font-head); font-weight:600; font-size:.88rem; border:1px solid var(--line); border-radius:99px; padding:.5rem 1.05rem; background:var(--paper-raised);}
+.mark-complete input{width:17px; height:17px;}
+
+.grid-2{display:grid; grid-template-columns:1fr 1fr; gap:1.4rem;}
+.grid-3{display:grid; grid-template-columns:repeat(3,1fr); gap:1.4rem;}
+.grid-4{display:grid; grid-template-columns:repeat(4,1fr); gap:1.1rem;}
+@media (max-width:920px){ .grid-3,.grid-4{grid-template-columns:1fr 1fr;} }
+@media (max-width:600px){ .grid-2,.grid-3,.grid-4{grid-template-columns:1fr;} }
+.card{border:1px solid var(--line); border-radius:var(--radius-m); padding:1.3rem; background:var(--paper-raised);}
+.card h3{font-size:1.05rem; margin-bottom:.5rem;}
+.card .icon{font-size:1.5rem; margin-bottom:.6rem; display:block;}
+.card p{color:var(--ink-soft); font-size:.94rem; margin-bottom:0;}
+.unit-card{border:1px solid var(--line); border-radius:var(--radius-m); padding:1.6rem; background:var(--paper-raised); text-decoration:none; color:inherit; display:block;}
+.unit-card:hover{border-color:var(--petrol);}
+.unit-card .un{font-family:var(--font-mono); color:var(--petrol); font-weight:600; font-size:.78rem; text-transform:uppercase;}
+.unit-card h3{margin:.4rem 0 .5rem; font-size:1.15rem;}
+.unit-card .u-progress{margin-top:.9rem; font-size:.8rem; color:var(--ink-soft);}
+
+.filter-row{display:flex; gap:.5rem; flex-wrap:wrap; margin-bottom:1.5rem;}
+.filter-chip{border:1px solid var(--line); background:var(--paper-raised); border-radius:99px; padding:.4rem .9rem; font-size:.85rem; font-family:var(--font-head); font-weight:600; color:var(--ink-soft);}
+.filter-chip.active{border-color:var(--petrol); color:var(--ink); background:var(--paper-sunken);}
+
+.tbl{border:1px solid var(--line); border-radius:var(--radius-m); overflow:hidden; margin:1.4rem 0;}
+.tbl-wrap{overflow-x:auto;}
+.tbl table{width:100%;}
+.tbl th{text-align:left; font-family:var(--font-mono); font-size:.78rem; background:var(--paper-sunken); padding:.7rem .9rem; border-bottom:1px solid var(--line); text-transform:uppercase;}
+.tbl td{padding:.75rem .9rem; border-bottom:1px solid var(--line); font-size:.94rem;}
+.tbl tr:last-child td{border-bottom:none;}
+.tbl .wt{text-align:right; font-family:var(--font-head); font-weight:700; color:var(--petrol);}
+
+.hours-bar{display:flex; height:34px; border-radius:99px; overflow:hidden; margin:1.2rem 0; border:1px solid var(--line);}
+.hours-bar div{display:flex; align-items:center; justify-content:center; font-family:var(--font-mono); font-size:.72rem; color:#fff;}
+
+footer.site{border-top:1px solid var(--line); padding:2.8rem 0; background:var(--paper-raised); margin-top:2rem;}
+footer.site .fgrid{display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:2rem;}
+footer.site h5{font-family:var(--font-head); font-size:.82rem; margin-bottom:.8rem;}
+footer.site a{display:block; color:var(--ink-soft); text-decoration:none; font-size:.9rem; margin-bottom:.5rem;}
+footer.site a:hover{color:var(--ink);}
+footer.site .fnote{color:var(--ink-soft); font-size:.86rem; max-width:44ch;}
+@media (max-width:760px){ footer.site .fgrid{grid-template-columns:1fr 1fr;} }
+
+.route-fade{animation:fadeIn .25s ease;}
+@keyframes fadeIn{from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:none;}}
+.visually-hidden{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap;}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Saltar al contenido</a>
+<header class="site">
+  <div class="site-bar">
+    <a class="brand" href="#/inicio">
+      <strong>Neuroplasticidad</strong>
+      <span>LIH 704 · Ingeniería Humana</span>
+    </a>
+    <nav class="primary" id="primaryNav" aria-label="Navegación principal"></nav>
+    <div class="header-actions">
+      <div class="progress-chip">Progreso: <b id="progressChipPct">0%</b></div>
+      <button class="hamburger" id="hamburgerBtn" aria-expanded="false" aria-controls="mobileNav" aria-label="Abrir menú"><span></span></button>
+    </div>
+  </div>
+</header>
+<nav id="mobileNav" aria-label="Navegación móvil"></nav>
+<main id="main"></main>
+<footer class="site">
+  <div class="wrap fgrid">
+    <div>
+      <strong style="font-family:var(--font-head); font-size:1.05rem;">Neuroplasticidad · LIH 704</strong>
+      <p class="fnote" style="margin-top:.8rem;">Libro universitario digital sobre genética humana, bases materiales de la herencia, embriología general y desarrollo del sistema nervioso, como fundamento para comprender la neuroplasticidad.</p>
+    </div>
+    <div><h5>Unidades</h5>
+      <a href="#/u1/0">U1 · Genética humana</a><a href="#/u2/0">U2 · Bases de la herencia</a><a href="#/u3/0">U3 · Embriología</a><a href="#/u4/0">U4 · Sistema nervioso</a>
+    </div>
+    <div><h5>Recursos</h5>
+      <a href="#/neuromitos">Laboratorio de neuromitos</a><a href="#/biblioteca">Biblioteca</a>
+    </div>
+    <div><h5>Curso</h5>
+      <a href="#/evaluacion">Plan SEP/RVOE</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+"use strict";
+const PKEY="np_progreso_v1"; function loadP(){try{return JSON.parse(localStorage.getItem(PKEY))||{};}catch(e){return{};}} function saveP(p){try{localStorage.setItem(PKEY,JSON.stringify(p));}catch(e){}} let progress=loadP();
+
+/* ---------------- helper components ---------------- */
+function objective(t){return `<div class="learning-objective"><span class="lbl">Objetivo de la lección</span><p>${t}</p></div>`;}
+function intro(t){return `<p class="lesson-intro">${t}</p>`;}
+function concept(title,body){return `<div class="key-concept"><h4>${title}</h4>${body}</div>`;}
+function def(term,body){return `<div class="definition"><div class="term">${term}</div><div class="def">${body}</div></div>`;}
+function defs(pairs){return pairs.map(p=>def(p[0],p[1])).join("");}
+function example(body,label){return `<div class="example"><span class="lbl">${label||"Ejemplo"}</span>${body}</div>`;}
+function warning(body,label){return `<div class="warning"><span class="lbl">${label||"Precaución"}</span>${body}</div>`;}
+function question(t){return `<blockquote class="question">${t}</blockquote>`;}
+function limitation(body){return `<div class="limitation"><span class="lbl">Limitación</span>${body}</div>`;}
+function flow(steps,opts){opts=opts||{}; const cls="flow-diagram"+(opts.vertical?" vertical":"")+(opts.clickable?" clickable":"");
+  return `<div class="${cls}" ${opts.id?`id="${opts.id}"`:""}>`+steps.map((s,i)=>{const st=`<div class="flow-step${opts.clickable&&i===0?" active":""}" ${opts.clickable?`data-stage="${i}"`:""}><span class="num">0${i+1}</span><h4>${s[0]}</h4><p>${s[1]}</p></div>`;return i<steps.length-1?st+`<div class="flow-arrow" aria-hidden="true">→</div>`:st;}).join("")+`</div>`;}
+function chain(items){return `<div class="chainrow">`+items.map((c,i,a)=>`<span class="clink">${c}</span>`+(i<a.length-1?'<span class="carrow">→</span>':"")).join("")+`</div>`;}
+function imgPlaceholder(o){return `<!-- IMAGEN: ${o.desc} -->\n<div class="image-placeholder"><div class="ip-title">${o.desc}</div><dl><dt>ALT</dt><dd>${o.alt}</dd><dt>PIE</dt><dd>${o.pie}</dd><dt>FUENTE</dt><dd>Por confirmar</dd><dt>LICENCIA</dt><dd>Por confirmar</dd></dl></div>`;}
+function evidenciaBlock(e){return `<div class="evidencia"><h4>📌 ${e.title} <span class="badge">${e.pct}%</span></h4><div class="field"><span class="lbl">Producto</span><p style="margin:0">${e.producto}</p></div><div class="field"><span class="lbl">Debe incluir</span><ul>${e.items.map(i=>`<li>${i}</li>`).join("")}</ul></div></div>`;}
+function actividad(a){return `<div class="activity"><h4>🧪 ${a.title} <span class="badge">${a.modalidad||"Individual"}</span></h4>${a.desc?`<p>${a.desc}</p>`:""}${a.pasos?`<div class="field"><span class="lbl">Pasos</span><ol>${a.pasos.map(s=>`<li>${s}</li>`).join("")}</ol></div>`:""}${a.reflexion?`<div class="field"><span class="lbl">Reflexión</span><p style="margin:0">${a.reflexion}</p></div>`:""}</div>`;}
+function recursoAntesExploraDespues(o){return `<div class="recurso"><h4>🔗 ${o.title}</h4>
+  <div class="rstep"><span class="lbl">Antes de explorar</span><p style="margin:0">${o.antes}</p></div>
+  <div class="rstep"><span class="lbl">Explora</span><p style="margin:0">${o.disponible?`<a class="btn btn-ghost btn-sm" href="${o.url}" target="_blank" rel="noopener noreferrer">ABRIR RECURSO →</a>`:"Recurso institucional por incorporar (enlace verificado pendiente de confirmación)."}</p></div>
+  <div class="rstep"><span class="lbl">Después</span><p style="margin:0">${o.despues}</p></div>
+</div>`;}
+
+let accCounter=0;
+function neuromitoBajoLupa(o){
+  const id="nm-"+(accCounter++);
+  return `<div class="accordion" id="${id}">
+    <button class="accordion-head" data-acc="${id}" aria-expanded="false"><span>🧠 Neuromito bajo lupa</span><span class="chev" aria-hidden="true">⌄</span></button>
+    <div class="accordion-claim">Afirmación: «${o.afirmacion}»</div>
+    <div class="accordion-body"><div class="accordion-body-inner">
+      <h4 style="margin-top:0;">¿Por qué suena creíble?</h4><p>${o.porque}</p>
+      ${o.plausible?`<h4>¿Qué parte podría parecer plausible?</h4><p>${o.plausible}</p>`:""}
+      <h4>¿Qué dice la evidencia?</h4><p>${o.evidencia}</p>
+      <h4>¿Qué parte es cierta?</h4><p>${o.cierto}</p>
+      <h4>Versión científicamente responsable</h4><p style="font-weight:600;">${o.version}</p>
+    </div></div>
+  </div>`;
+}
+function checklistBlock(id,title,items){return `<div class="checklist" data-checklist="${id}"><h4>${title}</h4>${items.map((it,i)=>`<label><input type="checkbox" data-check="${id}__${i}"><span>${it}</span></label>`).join("")}</div>`;}
+
+let quizCounter=0;
+function quizBlock(questions){
+  return questions.map(q=>{
+    const qid="q-"+(quizCounter++);
+    return `<div class="quiz-q" data-quiz="${qid}" data-correct="${q.correct}">
+      <p style="font-weight:600; margin-bottom:.6rem;">${q.prompt}</p>
+      ${q.options.map((o,i)=>`<label class="opt"><input type="radio" name="${qid}" value="${i}"> ${o}</label>`).join("")}
+      <div class="fb correct">✔ Correcto. ${q.explain}</div>
+      <div class="fb incorrect">✘ Todavía no. ${q.explain}</div>
+    </div>`;
+  }).join("");
+}
+
+function pedagogicalClose(o){
+  return `<div class="pedagogical-close">
+    <h3>Firma pedagógica de la unidad</h3>
+    <div class="trio sabemos">
+      <div><h4>✅ Lo que sabemos</h4><p style="color:var(--ink-soft); font-size:.92rem; margin:0;">${o.sabemos}</p></div>
+      <div><h4>🔍 Lo que todavía investigamos</h4><p style="color:var(--ink-soft); font-size:.92rem; margin:0;">${o.investigamos}</p></div>
+      <div><h4>⚠️ Lo que no debemos exagerar</h4><p style="color:var(--ink-soft); font-size:.92rem; margin:0;">${o.noExagerar}</p></div>
+    </div>
+    ${checklistBlock("yapuedo-"+(accCounter++), "Ya puedo…", o.yaPuedo)}
+    <h3>Comprueba tu aprendizaje</h3>
+    ${quizBlock(o.quiz)}
+  </div>`;
+}
+
+/* ---------------- Unit 2 special interactives ---------------- */
+function nucleotideDemo(){
+  return `<div class="nucleotide-demo" id="nucleoDemo">
+    <div>
+      <p style="margin:0 0 .5rem; font-size:.9rem; color:var(--ink-soft);">Selecciona una base nitrogenada:</p>
+      <div class="base-btns">
+        <button data-base="A" class="active">A</button><button data-base="T">T</button><button data-base="C">C</button><button data-base="G">G</button>
+      </div>
+    </div>
+    <div class="pair-readout" id="pairReadout">A se aparea con T (2 puentes de hidrógeno)</div>
+  </div>
+  <p style="font-size:.92rem; color:var(--ink-soft);">Cada nucleótido está formado por un grupo fosfato, una desoxirribosa y una base nitrogenada. Las cadenas de ADN son antiparalelas: una corre 5'→3' y la otra 3'→5'.</p>`;
+}
+function mitosisMeiosisTabs(){
+  return `<div class="tabs-nav" role="tablist" data-tabs="mm">
+    <button class="active" data-tab="mitosis">Mitosis</button><button data-tab="meiosis">Meiosis</button>
+  </div>
+  <div class="tab-panel active" data-panel="mitosis" data-tabgroup="mm">
+    <p><strong>Función:</strong> genera dos células hijas genéticamente idénticas a la célula original, para crecimiento y reparación de tejidos.</p>
+    <p><strong>Secuencia simplificada:</strong> duplicación del ADN → alineación de cromosomas en el ecuador celular → separación de cromátidas hermanas → dos núcleos idénticos.</p>
+    <p style="margin-bottom:0;"><strong>Resultado:</strong> 2 células, diploides (2n), genéticamente idénticas entre sí y a la célula madre.</p>
+  </div>
+  <div class="tab-panel" data-panel="meiosis" data-tabgroup="mm">
+    <p><strong>Función:</strong> genera células sexuales (gametos) con la mitad del número de cromosomas, e introduce variación genética.</p>
+    <p><strong>Secuencia simplificada:</strong> duplicación del ADN → dos divisiones sucesivas (meiosis I y II) → recombinación e intercambio de material genético entre cromosomas homólogos → cuatro núcleos distintos entre sí.</p>
+    <p style="margin-bottom:0;"><strong>Resultado:</strong> 4 células, haploides (n), genéticamente distintas entre sí y de la célula madre.</p>
+  </div>`;
+}
+const CODON_TABLE={
+  UUU:"Fenilalanina (Phe)",UUC:"Fenilalanina (Phe)",UUA:"Leucina (Leu)",UUG:"Leucina (Leu)",
+  CUU:"Leucina (Leu)",CUC:"Leucina (Leu)",CUA:"Leucina (Leu)",CUG:"Leucina (Leu)",
+  AUU:"Isoleucina (Ile)",AUC:"Isoleucina (Ile)",AUA:"Isoleucina (Ile)",AUG:"Metionina (Met) · inicio",
+  GUU:"Valina (Val)",GUC:"Valina (Val)",GUA:"Valina (Val)",GUG:"Valina (Val)",
+  UCU:"Serina (Ser)",UCC:"Serina (Ser)",UCA:"Serina (Ser)",UCG:"Serina (Ser)",
+  CCU:"Prolina (Pro)",CCC:"Prolina (Pro)",CCA:"Prolina (Pro)",CCG:"Prolina (Pro)",
+  ACU:"Treonina (Thr)",ACC:"Treonina (Thr)",ACA:"Treonina (Thr)",ACG:"Treonina (Thr)",
+  GCU:"Alanina (Ala)",GCC:"Alanina (Ala)",GCA:"Alanina (Ala)",GCG:"Alanina (Ala)",
+  UAU:"Tirosina (Tyr)",UAC:"Tirosina (Tyr)",UAA:"Alto (stop)",UAG:"Alto (stop)",
+  CAU:"Histidina (His)",CAC:"Histidina (His)",CAA:"Glutamina (Gln)",CAG:"Glutamina (Gln)",
+  AAU:"Asparagina (Asn)",AAC:"Asparagina (Asn)",AAA:"Lisina (Lys)",AAG:"Lisina (Lys)",
+  GAU:"Aspartato (Asp)",GAC:"Aspartato (Asp)",GAA:"Glutamato (Glu)",GAG:"Glutamato (Glu)",
+  UGU:"Cisteína (Cys)",UGC:"Cisteína (Cys)",UGA:"Alto (stop)",UGG:"Triptófano (Trp)",
+  CGU:"Arginina (Arg)",CGC:"Arginina (Arg)",CGA:"Arginina (Arg)",CGG:"Arginina (Arg)",
+  AGU:"Serina (Ser)",AGC:"Serina (Ser)",AGA:"Arginina (Arg)",AGG:"Arginina (Arg)",
+  GGU:"Glicina (Gly)",GGC:"Glicina (Gly)",GGA:"Glicina (Gly)",GGG:"Glicina (Gly)"
+};
+const BASE_SEQ_ORIGINAL=["A","T","G","G","G","T","A","A","A","T","A","A"];
+function translateDNA(seq){
+  const mrna=seq.map(b=>b==="T"?"U":b).join("");
+  const codons=[]; for(let i=0;i<mrna.length;i+=3) codons.push(mrna.slice(i,i+3));
+  const aas=[]; for(const c of codons){ const aa=CODON_TABLE[c]||"?"; aas.push(aa); if(aa.includes("stop")) break; }
+  return {mrna,codons,aas};
+}
+function mutationLab(){
+  const opts=BASE_SEQ_ORIGINAL.map((b,i)=>`<option value="${i}">Posición ${i+1} (${b})</option>`).join("");
+  return `<div class="mutation-lab" id="mutLab">
+    <p style="margin-top:0;">Secuencia molde (cadena codificante de ADN, 5'→3'):</p>
+    <div class="seqrow" id="mutSeqOriginal"></div>
+    <div class="controls">
+      <label for="mutPos" style="font-size:.9rem;">Posición a mutar:</label>
+      <select id="mutPos">${opts}</select>
+      <label for="mutBase" style="font-size:.9rem;">Nueva base:</label>
+      <select id="mutBase"><option>A</option><option>T</option><option>C</option><option>G</option></select>
+      <button class="btn btn-primary btn-sm" id="mutApply" type="button">APLICAR MUTACIÓN</button>
+      <button class="btn btn-ghost btn-sm" id="mutReset" type="button">REINICIAR</button>
+    </div>
+    <p style="margin:0; font-size:.9rem; color:var(--ink-soft);">Secuencia mutada y su traducción:</p>
+    <div class="seqrow" id="mutSeqMutated"></div>
+    <div class="result" id="mutResult"></div>
+  </div>`;
+}
+function initMutationLab(){
+  const box=document.getElementById("mutLab"); if(!box) return;
+  const origEl=document.getElementById("mutSeqOriginal"), mutEl=document.getElementById("mutSeqMutated"), resultEl=document.getElementById("mutResult");
+  let seq=BASE_SEQ_ORIGINAL.slice();
+  function paintSeq(el,arr){el.innerHTML=arr.map((b,i)=>`<span class="codon-${Math.floor(i/3)%4}">${b}</span>`).join("");}
+  function update(){
+    paintSeq(origEl, BASE_SEQ_ORIGINAL);
+    paintSeq(mutEl, seq);
+    const orig=translateDNA(BASE_SEQ_ORIGINAL), mut=translateDNA(seq);
+    const changedPos=BASE_SEQ_ORIGINAL.findIndex((b,i)=>b!==seq[i]);
+    let verdict="Sin cambios todavía.";
+    if(changedPos>-1){
+      const codonIdx=Math.floor(changedPos/3);
+      const origAA=orig.aas[codonIdx], mutAA=mut.aas[codonIdx];
+      if(!mutAA){ verdict="La secuencia mutada ya no puede traducirse en ese punto (posible corrimiento fuera del marco de lectura original si se hubiera insertado o eliminado una base; aquí solo se sustituyó una base)."; }
+      else if(origAA===mutAA){ verdict="Mutación silenciosa (sinónima): el codón cambió, pero codifica el mismo aminoácido. La proteína no cambia."; }
+      else if(mutAA.includes("stop") && !origAA.includes("stop")){ verdict="Mutación sin sentido (nonsense): aparece un codón de paro antes de tiempo. La proteína queda incompleta."; }
+      else if(origAA.includes("stop") && !mutAA.includes("stop")){ verdict="Se pierde el codón de paro original: la traducción podría continuar más allá de lo esperado."; }
+      else { verdict="Mutación de sentido erróneo (missense): cambia el aminoácido en esa posición. El efecto sobre la proteína depende de qué tan distinto sea el nuevo aminoácido y en qué parte de la proteína se ubique."; }
+    }
+    resultEl.innerHTML=`<p><b>mRNA original:</b> ${orig.mrna} → ${orig.aas.join(" – ")}</p><p><b>mRNA mutado:</b> ${mut.mrna} → ${mut.aas.join(" – ")}</p><p style="margin-bottom:0;"><b>Interpretación:</b> ${verdict}</p>`;
+  }
+  document.getElementById("mutApply").addEventListener("click",()=>{
+    const pos=parseInt(document.getElementById("mutPos").value,10);
+    const base=document.getElementById("mutBase").value;
+    seq=BASE_SEQ_ORIGINAL.slice(); seq[pos]=base; update();
+  });
+  document.getElementById("mutReset").addEventListener("click",()=>{ seq=BASE_SEQ_ORIGINAL.slice(); update(); });
+  update();
+}
+function initNucleotideDemo(){
+  const box=document.getElementById("nucleoDemo"); if(!box) return;
+  const pairs={A:"T",T:"A",C:"G",G:"C"};
+  const bondCount={A:"2",T:"2",C:"3",G:"3"};
+  box.querySelectorAll("[data-base]").forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      box.querySelectorAll("[data-base]").forEach(b=>b.classList.remove("active"));
+      btn.classList.add("active");
+      const b=btn.getAttribute("data-base");
+      document.getElementById("pairReadout").textContent=`${b} se aparea con ${pairs[b]} (${bondCount[b]} puentes de hidrógeno)`;
+    });
+  });
+}
+function initTabs(){
+  document.querySelectorAll('[data-tabs]').forEach(tabsNav=>{
+    const group=tabsNav.getAttribute('data-tabs');
+    tabsNav.querySelectorAll('button').forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        tabsNav.querySelectorAll('button').forEach(b=>b.classList.remove('active'));
+        btn.classList.add('active');
+        document.querySelectorAll(`[data-tabgroup="${group}"]`).forEach(p=>p.classList.remove('active'));
+        document.querySelector(`[data-tabgroup="${group}"][data-panel="${btn.getAttribute('data-tab')}"]`).classList.add('active');
+      });
+    });
+  });
+}
+function initClickableFlow(){
+  document.querySelectorAll('.flow-diagram.clickable').forEach(flowEl=>{
+    const detail=document.getElementById(flowEl.id+"-detail");
+    flowEl.querySelectorAll('[data-stage]').forEach(step=>{
+      step.addEventListener('click',()=>{
+        flowEl.querySelectorAll('.flow-step').forEach(s=>s.classList.remove('active'));
+        step.classList.add('active');
+        if(detail) detail.innerHTML=detail.getAttribute('data-'+step.getAttribute('data-stage')) || detail.dataset["s"+step.getAttribute('data-stage')] || "";
+      });
+    });
+  });
+}
+function initClassify(){
+  document.querySelectorAll('.classify-wrap').forEach(wrap=>{
+    wrap.querySelectorAll('.classify-items button').forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        if(btn.classList.contains('assigned')) return;
+        const target=wrap.querySelector(`.classify-target[data-layer="${btn.dataset.layer}"]`);
+        const chip=document.createElement('span');
+        chip.className='chip correct';
+        chip.textContent=btn.textContent;
+        target.appendChild(chip);
+        btn.classList.add('assigned');
+      });
+    });
+  });
+}
+function initQuiz(){
+  document.querySelectorAll('.quiz-q').forEach(q=>{
+    q.querySelectorAll('input[type=radio]').forEach(r=>{
+      r.addEventListener('change',()=>{
+        q.classList.add('answered');
+        const correct=q.getAttribute('data-correct');
+        q.querySelectorAll('.fb').forEach(f=>f.style.display='none');
+        if(r.value===correct){ q.querySelector('.fb.correct').style.display='block'; }
+        else{ q.querySelector('.fb.incorrect').style.display='block'; }
+      });
+    });
+  });
+}
+function initAccordions(){
+  document.querySelectorAll('[data-acc]').forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      const wrap=document.getElementById(btn.getAttribute("data-acc"));
+      const open=wrap.classList.toggle("open");
+      btn.setAttribute("aria-expanded", open?"true":"false");
+    });
+  });
+}
+
+/* =========================== CONTENT DATA =========================== */
+const CURRICULUM_MAP=[["Genes","¿Qué información heredamos?"],["Expresión","¿Cómo utiliza una célula esa información?"],["Desarrollo","¿Cómo surge un organismo?"],["Sistema nervioso","¿Cómo se forman neuronas y circuitos?"],["Experiencia","¿Cómo interactúan los circuitos con el ambiente?"],["Plasticidad","¿Cómo cambia el sistema nervioso?"]];
+
+/* ---------------- UNIDAD 1 · GENÉTICA HUMANA ---------------- */
+const U1=[
+{id:"intro",short:"Introducción",title:"¿Nacemos así o nos hacemos así?",body:`
+  ${intro("Genes vs. ambiente es la pregunta equivocada.")}
+  <p style="text-align:center; font-family:var(--font-head); font-weight:600; font-size:1.3rem; margin:1.6rem 0;">GENES × AMBIENTE</p>
+  <p>Casi cualquier característica humana observable —una enfermedad, un rasgo de personalidad, una capacidad cognitiva— es resultado de la interacción entre información genética y condiciones ambientales, no de uno de los dos factores actuando en aislamiento.</p>
+  ${objective("Definir genética humana, identificar el vocabulario básico del campo (gen, alelo, genotipo, fenotipo, herencia, variación, expresión génica, ambiente, epigenética) y comprender por qué la pregunta «genes o ambiente» está mal planteada.")}
+`},
+{id:"1-1",short:"1.1 Definición",title:"1.1 · Definición de genética humana",body:`
+  <p>La genética humana es el campo que estudia cómo se transmite, organiza y expresa la información hereditaria en nuestra especie, y cómo esa información participa en el desarrollo, la fisiología y la variación entre personas.</p>
+  <h3>Vocabulario básico</h3>
+  ${defs([
+    ["Gen","Segmento de ADN que contiene la información necesaria para producir un producto funcional, generalmente una proteína o una molécula de ARN."],
+    ["Alelo","Una de las versiones alternativas que puede tener un gen en una posición determinada del genoma."],
+    ["Genotipo","La composición genética de un individuo para uno o varios genes."],
+    ["Fenotipo","La característica observable resultante de la interacción entre el genotipo y el ambiente."],
+    ["Herencia","La transmisión de información genética de una generación a la siguiente."],
+    ["Variación","Las diferencias genéticas que existen entre individuos de una misma especie."],
+    ["Expresión génica","El proceso por el cual la información de un gen se utiliza para producir un producto funcional."],
+    ["Ambiente","El conjunto de condiciones externas al genoma que pueden influir en el desarrollo y la expresión génica: nutrición, exposiciones, experiencias, contexto social, entre otras."],
+    ["Epigenética","El estudio de los mecanismos que regulan la expresión génica sin alterar la secuencia del ADN."],
+    ["Interacción gen-ambiente","El fenómeno por el cual el efecto de un gen depende del ambiente en el que se expresa, y viceversa."]
+  ])}
+`},
+{id:"1-2",short:"1.2 Genes y ambiente",title:"1.2 · El problema genético/ambiental",body:`
+  ${flow([["Información genética","Lo heredado"],["Regulación","Qué se activa y cuándo"],["Desarrollo","Cómo se construye el organismo"],["Ambiente","Condiciones externas"],["Experiencia","Lo vivido"]])}
+  <p style="text-align:center; font-family:var(--font-head); font-weight:600;">↓</p>
+  <p style="text-align:center; font-family:var(--font-head); font-weight:600; font-size:1.2rem;">FENOTIPO</p>
+  ${warning("No existen porcentajes fijos como «60% genes / 40% ambiente» que apliquen de forma general a un rasgo. La proporción relativa de influencia genética y ambiental varía según el rasgo, la población y el ambiente estudiados.")}
+  <h3>Caso: ¿la estatura es genética?</h3>
+  <p><strong>Primera respuesta:</strong> sí.</p>
+  <p><strong>Pero...</strong> la estatura final resulta de la combinación de:</p>
+  ${flow([["Variantes genéticas","Cientos de genes con efectos pequeños"],["Nutrición","Especialmente en la infancia"],["Salud","Enfermedades e infecciones"],["Desarrollo prenatal","Condiciones durante la gestación"],["Ambiente","Condiciones socioeconómicas y de vida"]])}
+  <p style="text-align:center; font-family:var(--font-head); font-weight:600;">↓ FENOTIPO (estatura observada)</p>
+  ${concept("Idea central de la unidad","<p><strong>Heredable ≠ inevitable.</strong> Que un rasgo tenga un componente hereditario importante no significa que esté fijado de antemano ni que sea inmodificable por el ambiente.</p>")}
+`},
+{id:"1-3",short:"1.3 Epigenética",title:"1.3 · Epigenética",body:`
+  <p>La epigenética estudia cómo se regula la expresión génica sin que se modifique necesariamente la secuencia del ADN. Estos mecanismos pueden activar, silenciar o modular la actividad de distintos genes en distintos tipos celulares y en distintos momentos.</p>
+  <h3>Mecanismos principales</h3>
+  ${defs([
+    ["Metilación del ADN","Adición de grupos metilo a regiones del ADN, generalmente asociada con el silenciamiento de la expresión de un gen."],
+    ["Modificaciones de histonas","Cambios químicos en las proteínas que empaquetan el ADN, que pueden facilitar o dificultar el acceso de la maquinaria celular a un gen."],
+    ["Regulación","El conjunto de procesos que determinan cuándo, dónde y cuánto se expresa un gen."]
+  ])}
+  ${warning("La epigenética no significa que \"tus pensamientos cambian tu ADN\". La secuencia del ADN permanece igual; lo que cambia es qué partes de esa secuencia se utilizan activamente.")}
+  ${neuromitoBajoLupa({
+    afirmacion:"Puedes activar genes con pensamiento positivo.",
+    porque:"La palabra «epigenético» suena técnica y autorizada, y combina un concepto científico real (la regulación de la expresión génica) con la idea intuitiva y atractiva de que la mente controla el cuerpo.",
+    plausible:"Existen procesos fisiológicos —estrés crónico, actividad física, algunos hábitos de sueño— que sí pueden asociarse con cambios en marcadores epigenéticos en estudios específicos.",
+    evidencia:"La evidencia disponible relaciona la regulación epigenética principalmente con factores fisiológicos, del desarrollo y ambientales medibles — no con procesos puramente mentales o \"positividad\" como categoría general.",
+    cierto:"Es cierto que la experiencia y el ambiente pueden influir en la regulación de la expresión génica a través de mecanismos fisiológicos concretos.",
+    version:"El ambiente y la fisiología —no el pensamiento positivo por sí mismo— pueden influir en la regulación de la expresión génica a través de mecanismos como la metilación del ADN, dentro de límites biológicos bien definidos."
+  })}
+`},
+{id:"1-4",short:"1.4 Actividad",title:"1.4 · Actividad — Genético no significa inevitable",body:`
+  <p>Clasifica cada afirmación como <strong>correcta</strong>, <strong>incorrecta</strong> o <strong>necesita matiz</strong>, y justifica tu elección por escrito.</p>
+  ${actividad({
+    title:"Genético no significa inevitable",
+    pasos:[
+      "«Si un rasgo es hereditario, no se puede modificar.»",
+      "«Los genes determinan completamente la inteligencia.»",
+      "«Una predisposición genética a una enfermedad significa que la desarrollaré con certeza.»",
+      "«El ambiente puede influir en cómo se expresan los genes.»",
+      "«Dos personas con el mismo genotipo tendrán exactamente el mismo fenotipo.»"
+    ]
+  })}
+`},
+{id:"evidencia-1",short:"Evidencia SEP",title:"Evidencia SEP — Síntesis académica",body:`
+  ${evidenciaBlock({
+    title:"Síntesis académica",
+    pct:20,
+    producto:"Documento (Google Docs o Word).",
+    items:["Genética humana.","Genotipo.","Fenotipo.","Interacción gen-ambiente.","Expresión génica.","Plasticidad (como anticipo de lo que se profundizará en la Unidad 4).","Un ejemplo analizado con el mismo nivel de detalle que el caso de la estatura."]
+  })}
+  ${pedagogicalClose({
+    sabemos:"El fenotipo resulta de la interacción entre genotipo y ambiente; la regulación epigenética puede modificar la expresión génica sin alterar la secuencia del ADN.",
+    investigamos:"Qué proporción de la variación en rasgos complejos específicos se explica por factores genéticos frente a ambientales, y cómo interactúan exactamente en cada caso.",
+    noExagerar:"Que un cambio epigenético equivalga a \"reprogramar\" la biología a voluntad, o que un componente hereditario implique un destino fijo e inmodificable.",
+    yaPuedo:["Definir genética humana con mis propias palabras.","Distinguir genotipo de fenotipo.","Explicar por qué \"heredable\" no equivale a \"inevitable\".","Identificar cuándo una afirmación sobre epigenética excede la evidencia disponible."],
+    quiz:[
+      {prompt:"El fenotipo es…",options:["La secuencia completa del ADN de una persona.","La característica observable resultante de genotipo y ambiente.","Un sinónimo de genotipo.","Una mutación puntual."],correct:"1",explain:"El fenotipo es la característica observable; siempre resulta de la interacción entre el genotipo y el ambiente."},
+      {prompt:"La epigenética estudia…",options:["Cambios en la secuencia del ADN.","La regulación de la expresión génica sin cambiar la secuencia del ADN.","Únicamente enfermedades hereditarias.","La estructura del cromosoma Y."],correct:"1",explain:"La epigenética se centra en mecanismos de regulación —como la metilación— que no alteran la secuencia del ADN."},
+      {prompt:"«Heredable ≠ inevitable» significa que…",options:["Los genes no influyen en nada.","Un componente hereditario importante no implica que el rasgo sea inmodificable.","Todos los rasgos son 100% ambientales.","La herencia solo aplica a enfermedades."],correct:"1",explain:"Un componente hereditario alto no excluye la influencia del ambiente ni la posibilidad de modificación."}
+    ]
+  })}
+  <div class="next-lesson" style="border:none; padding:0; margin-top:1rem;"><a class="btn btn-primary" href="#/u2/0">CONTINUAR A LA UNIDAD 2 →</a></div>
+`}
+];
+
+/* ---------------- UNIDAD 2 · BASES MATERIALES DE LA HERENCIA ---------------- */
+const U2=[
+{id:"intro",short:"Introducción",title:"De una molécula a una célula funcional",body:`
+  ${intro("¿Cómo almacena y utiliza información una célula?")}
+  <p>En esta unidad estudiaremos la estructura del ADN, cómo se replica, cómo se organiza en cromosomas, cómo se divide una célula, cómo se traduce la información genética en proteínas, y qué ocurre cuando esa información cambia.</p>
+`},
+{id:"2-1",short:"2.1 Estructura del ADN",title:"2.1 · ADN — estructura y componentes",body:`
+  <p>El ADN (ácido desoxirribonucleico) es un polímero formado por unidades llamadas nucleótidos. Cada nucleótido tiene tres componentes: un grupo fosfato, un azúcar (desoxirribosa) y una base nitrogenada (adenina, timina, citosina o guanina).</p>
+  ${nucleotideDemo()}
+  <h3>La doble hélice</h3>
+  ${flow([["Nucleótidos","Unidades individuales"],["Cadena","Nucleótidos unidos en secuencia"],["Doble hélice","Dos cadenas complementarias enrolladas"]])}
+  <p>Las bases se aparean de forma específica: adenina con timina (A↔T) y citosina con guanina (C↔G), mediante puentes de hidrógeno. Las dos cadenas son antiparalelas: mientras una corre en dirección 5'→3', la otra corre en dirección 3'→5'.</p>
+`},
+{id:"2-2",short:"2.2 Replicación",title:"2.2 · Replicación del ADN",body:`
+  ${flow([["ADN original","Doble hélice"],["Apertura","Separación de las cadenas"],["Cadenas molde","Cada cadena sirve de plantilla"],["Nuevas cadenas","Se sintetizan por complementariedad"],["Dos moléculas","Cada una con una cadena original y una nueva"]])}
+  <p style="text-align:center; font-family:var(--font-head); font-weight:600; font-size:1.15rem;">Replicación semiconservativa</p>
+  <p>Se llama semiconservativa porque cada molécula de ADN resultante conserva una de las cadenas originales y añade una cadena recién sintetizada.</p>
+  ${recursoAntesExploraDespues({
+    title:"Recurso interactivo sobre replicación del ADN (UNAM)",
+    antes:"¿Qué necesita duplicarse antes de que una célula pueda dividirse?",
+    disponible:false,
+    despues:"Explica, con tus propias palabras, por qué el proceso se denomina replicación semiconservativa."
+  })}
+`},
+{id:"2-3",short:"Historia · Watson y Crick",title:"Historia de la ciencia · Watson y Crick",body:`
+  <p>El modelo de la doble hélice del ADN se publicó en 1953 y suele atribuirse únicamente a James Watson y Francis Crick. Sin embargo, su construcción no fue producto exclusivo de dos investigadores.</p>
+  <h3>¿Quién «descubre» algo en ciencia?</h3>
+  <p>Los datos de difracción de rayos X obtenidos por <strong>Rosalind Franklin</strong>, junto con el trabajo de <strong>Maurice Wilkins</strong>, fueron determinantes para que <strong>James Watson</strong> y <strong>Francis Crick</strong> propusieran el modelo estructural de doble hélice. El caso ilustra que el conocimiento científico suele construirse de forma colectiva y acumulativa, no como el resultado aislado de una o dos personas.</p>
+  ${warning("Algunos materiales institucionales registran la expresión «Watson y Crack». La forma académicamente correcta, utilizada en toda la literatura científica, es «Watson y Crick».", "Nota de terminología")}
+`},
+{id:"2-4",short:"2.3–2.4 Cromosomas",title:"2.3–2.4 · Información genética y cromosomas eucariotas",body:`
+  <p>La información genética de una célula eucariota no flota libremente en el núcleo: está organizada en niveles crecientes de empaquetamiento.</p>
+  ${flow([["Célula","Unidad completa"],["Núcleo","Contiene el material genético"],["Cromosoma","ADN empaquetado con proteínas"],["Cromatina","ADN + histonas, menos condensado"],["Nucleosoma","ADN enrollado alrededor de histonas"],["ADN","La doble hélice"]])}
+  <p>Las células humanas típicas contienen 46 cromosomas organizados en 23 pares: 22 pares autosómicos y un par de cromosomas sexuales. Cada cromosoma duplicado está formado por dos cromátidas hermanas unidas por un centrómero.</p>
+`},
+{id:"2-5",short:"2.5 Mitosis y meiosis",title:"2.5 · Mitosis y meiosis",body:`
+  ${mitosisMeiosisTabs()}
+`},
+{id:"2-6",short:"2.7 Código genético",title:"2.7 · Código genético, transcripción y traducción",body:`
+  ${flow([["ADN","Información almacenada"],["Transcripción","Se copia a ARN"],["ARN","Mensajero portador de la información"],["Traducción","Se lee en el ribosoma"],["Secuencia de aminoácidos","Cadena polipeptídica"],["Proteína","Producto funcional"]])}
+  <div class="accordion" id="realidad-compleja">
+    <button class="accordion-head" data-acc="realidad-compleja" aria-expanded="false"><span>La realidad es más compleja</span><span class="chev" aria-hidden="true">⌄</span></button>
+    <div class="accordion-body"><div class="accordion-body-inner">
+      <p>El esquema ADN → ARN → proteína simplifica un proceso que en realidad incluye capas adicionales de regulación:</p>
+      <ul>
+        <li><strong>Regulación de la transcripción</strong> — no todos los genes se transcriben todo el tiempo.</li>
+        <li><strong>ARN no codificante</strong> — no todo el ARN se traduce en proteína; parte cumple funciones regulatorias.</li>
+        <li><strong>Procesamiento del ARN</strong> — el transcrito primario se modifica antes de traducirse.</li>
+        <li><strong>Ambiente celular</strong> — el mismo gen puede expresarse de forma distinta según el tipo de célula.</li>
+        <li><strong>Señales</strong> — moléculas señalizadoras externas e internas modulan cuándo y cuánto se expresa un gen.</li>
+      </ul>
+    </div></div>
+  </div>
+`},
+{id:"2-7",short:"2.8 Mutaciones",title:"2.8 · Mutaciones y expresión",body:`
+  <p>Una mutación es un cambio en la secuencia del ADN. Usa el laboratorio siguiente para explorar cómo un cambio de una sola base puede o no modificar la proteína resultante.</p>
+  ${mutationLab()}
+  ${concept("Idea central","<p><strong>Una mutación no necesariamente produce un cambio observable en el fenotipo.</strong> Dependiendo de dónde ocurra y de la redundancia del código genético, el efecto puede ir desde nulo hasta significativo.</p>")}
+  ${actividad({
+    title:"Del gen a la proteína",
+    pasos:["Transcribe la secuencia de ADN proporcionada a ARN mensajero.","Identifica los codones.","Traduce la secuencia a aminoácidos usando la tabla del código genético.","Introduce una mutación puntual.","Compara el resultado con la secuencia original."],
+    reflexion:"¿Por qué una mutación no produce siempre una consecuencia observable?"
+  })}
+`},
+{id:"evidencia-2",short:"Cierre",title:"Cierre de la unidad",body:`
+  ${pedagogicalClose({
+    sabemos:"El ADN se replica de forma semiconservativa; la información fluye de ADN a ARN a proteína mediante transcripción y traducción, reguladas por múltiples mecanismos adicionales.",
+    investigamos:"Los detalles precisos de la regulación de la expresión génica en distintos tipos celulares y contextos del desarrollo siguen siendo un área activa de investigación.",
+    noExagerar:"Que toda mutación produzca necesariamente un cambio visible, o que el descubrimiento del ADN se deba exclusivamente a dos personas.",
+    yaPuedo:["Describir la estructura básica de un nucleótido.","Explicar por qué la replicación del ADN es semiconservativa.","Distinguir mitosis de meiosis por su función y resultado.","Explicar la diferencia entre una mutación silenciosa, una de sentido erróneo y una sin sentido."],
+    quiz:[
+      {prompt:"La replicación del ADN se llama semiconservativa porque…",options:["Se destruye la molécula original.","Cada molécula resultante conserva una cadena original y una nueva.","Solo se replica la mitad del ADN.","Ocurre una sola vez en la vida de la célula."],correct:"1",explain:"Cada nueva doble hélice combina una cadena antigua (molde) con una recién sintetizada."},
+      {prompt:"La meiosis, a diferencia de la mitosis…",options:["Produce células genéticamente idénticas.","Produce gametos haploides con variación genética.","No involucra división celular.","Ocurre únicamente en células somáticas."],correct:"1",explain:"La meiosis genera 4 células haploides genéticamente distintas entre sí, a diferencia de la mitosis."},
+      {prompt:"Una mutación silenciosa es aquella que…",options:["Detiene por completo la síntesis de proteínas.","Cambia el codón pero no el aminoácido resultante.","Siempre causa una enfermedad.","Solo ocurre en el ADN mitocondrial."],correct:"1",explain:"Debido a la redundancia del código genético, distintos codones pueden codificar el mismo aminoácido."}
+    ]
+  })}
+  <div class="next-lesson" style="border:none; padding:0; margin-top:1rem;"><a class="btn btn-primary" href="#/u3/0">CONTINUAR A LA UNIDAD 3 →</a></div>
+`}
+];
+
+/* ---------------- UNIDAD 3 · EMBRIOLOGÍA GENERAL ---------------- */
+const U3=[
+{id:"intro",short:"Introducción",title:"De una célula a un sistema nervioso",body:`
+  ${intro("¿Cómo puede una única célula originar millones de células especializadas?")}
+  <p>Esta unidad recorre el desarrollo humano temprano, desde la gametogénesis hasta el periodo fetal, prestando especial atención a los eventos que anteceden y hacen posible la formación del sistema nervioso — tema central de la Unidad 4.</p>
+`},
+{id:"3-1",short:"3.1 Gametogénesis",title:"3.1 · Gametogénesis",body:`
+  <p>La gametogénesis es el proceso mediante el cual se producen las células sexuales (gametos) a través de la meiosis, estudiada en la unidad anterior. En la mujer, este proceso se llama ovogénesis; en el hombre, espermatogénesis. Ambos procesos producen células haploides especializadas para la fecundación.</p>
+`},
+{id:"3-2",short:"3.2–3.3 Primeras semanas",title:"3.2–3.3 · Primera y segunda semana del desarrollo",body:`
+  ${flow([["Fecundación","Unión de gametos"],["Cigoto","Célula única resultante"],["Segmentación","Divisiones celulares tempranas"],["Mórula","Masa sólida de células"],["Blastocisto","Estructura con cavidad interna"],["Implantación","Fijación al endometrio"]],{id:"timeline1"})}
+  <p>Durante la primera semana, el cigoto atraviesa múltiples divisiones (segmentación) mientras se desplaza hacia el útero, formando primero la mórula y después el blastocisto, que se implanta en el endometrio hacia el final de la primera semana. Durante la segunda semana se organiza el disco bilaminar, precursor de las capas germinales.</p>
+`},
+{id:"3-3",short:"3.4 Gastrulación",title:"3.4 · Tercera semana — Gastrulación",body:`
+  <p>La gastrulación es uno de los eventos más importantes del desarrollo embrionario: transforma el disco bilaminar en un disco trilaminar, estableciendo las tres capas germinales de las que derivarán todos los tejidos del cuerpo.</p>
+  <div class="grid-3">
+    <div class="card"><h3>Ectodermo</h3><p>Piel, sistema nervioso, órganos de los sentidos.</p></div>
+    <div class="card"><h3>Mesodermo</h3><p>Músculo, hueso, sistema circulatorio, tejido conectivo.</p></div>
+    <div class="card"><h3>Endodermo</h3><p>Revestimiento del tubo digestivo y órganos derivados: hígado, páncreas, pulmones.</p></div>
+  </div>
+  ${warning("El ectodermo da origen al sistema nervioso — el hilo conductor que conecta esta unidad con la Unidad 4.")}
+  <h3>Actividad — ¿De dónde viene?</h3>
+  <div class="classify-wrap">
+    <p style="color:var(--ink-soft); font-size:.94rem;">Haz clic en cada estructura y asígnala a su capa germinal de origen (a nivel introductorio).</p>
+    <div class="classify-items">
+      <button data-layer="ectodermo">Cerebro</button>
+      <button data-layer="ectodermo">Epidermis</button>
+      <button data-layer="ectodermo">Médula espinal</button>
+      <button data-layer="mesodermo">Músculo</button>
+      <button data-layer="mesodermo">Hueso</button>
+      <button data-layer="endodermo">Intestino</button>
+    </div>
+    <div class="classify-targets">
+      <div class="classify-target" data-layer="ectodermo"><h5>Ectodermo</h5></div>
+      <div class="classify-target" data-layer="mesodermo"><h5>Mesodermo</h5></div>
+      <div class="classify-target" data-layer="endodermo"><h5>Endodermo</h5></div>
+    </div>
+  </div>
+`},
+{id:"3-4",short:"3.5 Embrión y feto",title:"3.5–3.6 · Organogénesis y periodo fetal",body:`
+  <p>Entre las semanas 3 y 8 ocurre la organogénesis: la formación de los principales órganos y sistemas, incluyendo la neurulación (que se estudiará en detalle en la Unidad 4). A partir de la novena semana comienza el periodo fetal.</p>
+  <div class="grid-2">
+    <div class="card"><h3>Periodo embrionario</h3><p>Formación inicial de estructuras y órganos (semanas 1–8).</p></div>
+    <div class="card"><h3>Periodo fetal</h3><p>Crecimiento y maduración de estructuras ya formadas (semana 9 hasta el nacimiento).</p></div>
+  </div>
+  ${warning("Esta distinción es útil pero no absoluta: la maduración de algunos sistemas, incluido el sistema nervioso, continúa mucho después del nacimiento.")}
+`},
+{id:"3-5",short:"Desarrollo congénito y placenta",title:"Desarrollo congénito y placenta",body:`
+  <h3>Desarrollo congénito</h3>
+  <p>Cuando el desarrollo de una estructura se aparta de su patrón habitual, es preferible hablar de <strong>anomalía congénita</strong>, <strong>variación del desarrollo</strong> o <strong>factor de riesgo</strong>, en lugar de utilizar la palabra «defecto» como etiqueta de una persona.</p>
+  ${warning("Evita culpabilizar automáticamente a la madre, a la genética o a la conducta individual. La mayoría de las alteraciones del desarrollo resultan de una combinación de factores genéticos, ambientales y azarosos, muchos de ellos no evitables ni atribuibles a una causa única identificable.")}
+  <h3>Placenta</h3>
+  <p style="text-align:center; font-family:var(--font-head); font-weight:600;">Circulación materna ↔ interfaz placentaria ↔ circulación fetal</p>
+  ${warning("La sangre materna y la sangre fetal no simplemente \"se mezclan\": la placenta actúa como una interfaz especializada que permite el intercambio selectivo de gases, nutrientes y desechos entre ambos sistemas circulatorios, manteniéndolos generalmente separados.")}
+`},
+{id:"evidencia-3",short:"Cierre",title:"Actividad y cierre de la unidad",body:`
+  ${actividad({
+    title:"Timeline del desarrollo",
+    modalidad:"Individual · Canva o herramienta equivalente",
+    pasos:["Representa gráficamente: fecundación → implantación → gastrulación → neurulación → organogénesis → periodo fetal.","Para cada evento, indica: nombre del evento, momento aproximado, importancia, y relación con el desarrollo neural."]
+  })}
+  ${pedagogicalClose({
+    sabemos:"El desarrollo humano temprano sigue una secuencia identificable de eventos —fecundación, segmentación, implantación, gastrulación, organogénesis— y el ectodermo da origen al sistema nervioso.",
+    investigamos:"Los mecanismos moleculares exactos que coordinan la gastrulación y la organogénesis en humanos, en gran medida inferidos a partir de modelos animales y estudios limitados en humanos.",
+    noExagerar:"Que una etapa específica del embarazo determine de forma aislada y total el resultado del desarrollo, o que toda alteración del desarrollo tenga una causa única identificable.",
+    yaPuedo:["Describir la secuencia general del desarrollo embrionario temprano.","Explicar qué es la gastrulación y por qué es relevante para el sistema nervioso.","Distinguir periodo embrionario de periodo fetal.","Explicar por qué la sangre materna y fetal no se mezclan directamente."],
+    quiz:[
+      {prompt:"El sistema nervioso deriva principalmente de…",options:["El endodermo.","El mesodermo.","El ectodermo.","La placenta."],correct:"2",explain:"El ectodermo da origen al sistema nervioso además de la piel y los órganos de los sentidos."},
+      {prompt:"La gastrulación es importante porque…",options:["Marca el nacimiento.","Establece las tres capas germinales.","Ocurre después del nacimiento.","Solo afecta al sistema digestivo."],correct:"1",explain:"La gastrulación transforma el disco bilaminar en un disco trilaminar con ectodermo, mesodermo y endodermo."}
+    ]
+  })}
+  <div class="next-lesson" style="border:none; padding:0; margin-top:1rem;"><a class="btn btn-primary" href="#/u4/0">CONTINUAR A LA UNIDAD 4 →</a></div>
+`}
+];
+
+/* ---------------- UNIDAD 4 · DESARROLLO DEL SISTEMA NERVIOSO ---------------- */
+const U4=[
+{id:"intro",short:"Introducción",title:"Construir un cerebro",body:`
+  ${intro("Producir neuronas es solamente el comienzo.")}
+  <p>Esta unidad conecta todo lo estudiado hasta ahora —genética, expresión génica, desarrollo embrionario— con la formación del sistema nervioso y, a partir de ella, con la neuroplasticidad: la capacidad del sistema nervioso para cambiar.</p>
+`},
+{id:"4-1",short:"Neurulación",title:"Neurulación",body:`
+  ${flow([["Ectodermo","Capa germinal de origen"],["Placa neural","Engrosamiento del ectodermo"],["Surco neural","Se pliega hacia adentro"],["Pliegues neurales","Se elevan y aproximan"],["Tubo neural","Se cierra, precursor del sistema nervioso central"]])}
+  <p>La neurulación es el proceso mediante el cual el ectodermo se transforma en el tubo neural, la estructura precursora de todo el sistema nervioso central.</p>
+`},
+{id:"4-2",short:"Del tubo neural al encéfalo",title:"Del tubo neural al encéfalo",body:`
+  ${flow([["Tubo neural","Estructura inicial"],["3 vesículas primarias","Prosencéfalo, mesencéfalo, rombencéfalo"],["5 vesículas secundarias","Telencéfalo, diencéfalo, mesencéfalo, metencéfalo, mielencéfalo"],["Estructuras adultas","Corteza, tálamo, cerebelo, tronco encefálico, entre otras"]])}
+`},
+{id:"4-3",short:"El viaje de una neurona",title:"El viaje de una neurona",body:`
+  <p>Este es uno de los procesos centrales del curso: describe cómo una célula precursora llega a integrarse en un circuito funcional del sistema nervioso.</p>
+  ${flow([["Proliferación","Multiplicación celular"],["Migración","Desplazamiento hacia su ubicación final"],["Diferenciación","Adquisición de identidad neuronal específica"],["Crecimiento axonal","El axón busca su destino"],["Sinaptogénesis","Formación de conexiones sinápticas"],["Selección / poda","Eliminación de conexiones no funcionales"],["Mielinización","Recubrimiento de axones para mayor eficiencia"],["Experiencia","El circuito interactúa con el ambiente"],["Modificación de circuitos","Los circuitos cambian en respuesta a la experiencia"]])}
+  ${concept("Por qué importa","<p>Este recorrido —de la proliferación a la modificación de circuitos por experiencia— es el puente conceptual entre \"desarrollo del sistema nervioso\" y \"neuroplasticidad\": la plasticidad no aparece de la nada, es la continuación natural de procesos que comenzaron desde la formación del tubo neural.</p>")}
+`},
+{id:"4-4",short:"Neuroplasticidad — definición",title:"Neuroplasticidad — definición y tipos",body:`
+  <p style="text-align:center; font-family:var(--font-head); font-weight:600;">Desarrollo → Experiencia → Cambio</p>
+  ${concept("Definición","<p>La neuroplasticidad se refiere a la capacidad del sistema nervioso para modificar aspectos de su estructura, función o conectividad como parte del desarrollo o en respuesta a experiencia, aprendizaje, ambiente o lesión.</p>")}
+  <h3>Tipos de plasticidad</h3>
+  ${defs([
+    ["Plasticidad sináptica","Cambios en la fuerza de las conexiones entre neuronas."],
+    ["Plasticidad estructural","Cambios físicos en componentes neuronales o en circuitos, como la formación o eliminación de conexiones."],
+    ["Plasticidad funcional","Cambios en la organización funcional de regiones o redes del sistema nervioso."],
+    ["Plasticidad dependiente de experiencia","Cambios relacionados con la exposición a estímulos y el aprendizaje."],
+    ["Plasticidad posterior a lesión","Procesos de reorganización y recuperación funcional tras un daño al sistema nervioso."]
+  ])}
+`},
+{id:"4-5",short:"Límites de la plasticidad",title:"Límites de la plasticidad",body:`
+  <p style="text-align:center; font-family:var(--font-head); font-weight:600; font-size:1.15rem;">Plasticidad ≠ cambio ilimitado</p>
+  <p>La magnitud y el tipo de cambio plástico posible dependen de múltiples variables:</p>
+  <ul><li>Edad</li><li>Región del sistema nervioso</li><li>Tipo de experiencia</li><li>Duración</li><li>Intensidad</li><li>Biología individual</li><li>Presencia de lesión</li><li>Contexto</li></ul>
+  ${concept("Periodos sensibles","<p>Algunas ventanas del desarrollo muestran mayor sensibilidad a ciertos tipos de experiencia para el desarrollo típico de una función (por ejemplo, la exposición temprana al lenguaje). Sin embargo, estos periodos no deben entenderse como ventanas absolutas que se \"cierran para siempre\": el sistema nervioso conserva distintos grados de plasticidad a lo largo de la vida, aunque generalmente en menor magnitud o con distintos mecanismos que en etapas tempranas.</p>")}
+`},
+{id:"4-6",short:"Neuromitos",title:"Laboratorio de neuromitos — vista rápida",body:`
+  <p>Esta unidad incluye un laboratorio completo de neuromitos, disponible también como página independiente en la navegación principal.</p>
+  ${neuromitoBajoLupa({
+    afirmacion:"La neuroplasticidad permite reprogramar completamente el cerebro.",
+    porque:"La neuroplasticidad es un concepto científico real y bien establecido, lo que facilita que se use como palabra de autoridad para respaldar afirmaciones mucho más amplias de lo que la evidencia permite.",
+    plausible:"Es cierto que el sistema nervioso cambia en respuesta a la experiencia a lo largo de toda la vida.",
+    evidencia:"La evidencia muestra cambios plásticos específicos, acotados por edad, región, tipo e intensidad de la experiencia — no una capacidad general e ilimitada de \"reprogramación\".",
+    cierto:"El sistema nervioso efectivamente puede modificar su estructura y función en respuesta a la experiencia.",
+    version:"La neuroplasticidad permite cambios reales pero acotados en la estructura y función del sistema nervioso, sujetos a límites biológicos relacionados con la edad, la región y el tipo de experiencia involucrada."
+  })}
+  <a class="btn btn-ghost" href="#/neuromitos">VER EL LABORATORIO COMPLETO →</a>
+`},
+{id:"4-7",short:"SEP · Foro",title:"Actividad SEP — Foro: experiencia, aprendizaje y plasticidad",body:`
+  ${actividad({
+    title:"Experiencia, aprendizaje y plasticidad",
+    modalidad:"Foro · Docente · 15%",
+    desc:"Caso: una persona adulta comienza a aprender un nuevo idioma.",
+    reflexion:"¿Qué significa científicamente decir que su cerebro puede cambiar durante el aprendizaje? Tu respuesta debe utilizar los conceptos de plasticidad, experiencia, práctica, circuitos y límites. No se aceptan respuestas del tipo «porque el cerebro se reprograma» sin especificar mecanismo, tipo de plasticidad ni límites."
+  })}
+`},
+{id:"4-8",short:"SEP · Infografía",title:"Actividad SEP — Infografía: un caso de plasticidad",body:`
+  ${actividad({
+    title:"Un caso de plasticidad",
+    modalidad:"Infografía · Docente · Canva · 20%",
+    desc:"Elige uno de los siguientes casos: aprendizaje musical, segundo idioma, habilidad motora, rehabilitación, memoria, o adaptación sensorial.",
+    pasos:["Experiencia — ¿qué se practica o experimenta?","Sistema o circuito involucrado.","Mecanismo propuesto.","Evidencia disponible.","Cambio observado.","Limitaciones del caso o de la evidencia."]
+  })}
+`},
+{id:"4-9",short:"Actividad final",short2:"final",title:"Actividad final — Plasticidad ≠ magia",body:`
+  <p>Selecciona una afirmación pública sobre neuroplasticidad, por ejemplo: <em>«Puedes reprogramar completamente tu cerebro en 21 días.»</em></p>
+  ${actividad({
+    title:"Plasticidad ≠ magia",
+    pasos:["Afirmación — enúnciala tal como circula públicamente.","Fuente — ¿de dónde proviene?","Concepto neurocientífico utilizado.","Mecanismo propuesto.","Evidencia disponible.","Tipo de plasticidad implicado (sináptica, estructural, funcional, dependiente de experiencia, posterior a lesión).","Limitaciones.","Qué sabemos.","Qué no sabemos.","Reformulación responsable."]
+  })}
+  ${pedagogicalClose({
+    sabemos:"El sistema nervioso se forma mediante un proceso ordenado —proliferación, migración, diferenciación, sinaptogénesis, poda, mielinización— y conserva capacidad de cambio plástico a lo largo de la vida, aunque con límites relacionados con edad, región y tipo de experiencia.",
+    investigamos:"Los mecanismos celulares y moleculares precisos de la plasticidad en el cerebro humano adulto, en gran medida extrapolados de modelos animales y de neuroimagen indirecta.",
+    noExagerar:"Que la plasticidad equivalga a una capacidad ilimitada de \"reprogramación\" del cerebro en plazos fijos y sin condiciones.",
+    yaPuedo:["Describir el viaje de una neurona desde la proliferación hasta su integración en un circuito.","Definir neuroplasticidad y distinguir sus principales tipos.","Explicar por qué la plasticidad tiene límites.","Evaluar críticamente una afirmación pública sobre neuroplasticidad."],
+    quiz:[
+      {prompt:"La poda sináptica consiste en…",options:["La formación de nuevas neuronas.","La eliminación de conexiones sinápticas no funcionales.","La mielinización de los axones.","La migración neuronal."],correct:"1",explain:"La poda elimina conexiones que no resultan funcionalmente relevantes, refinando los circuitos."},
+      {prompt:"Un periodo sensible en el desarrollo…",options:["Es una ventana que se cierra por completo y para siempre.","Es un periodo de mayor sensibilidad a cierto tipo de experiencia, sin ser absoluto.","Solo existe en la vida adulta.","No tiene relación con la plasticidad."],correct:"1",explain:"Los periodos sensibles son ventanas de mayor sensibilidad, no límites absolutos e irreversibles."},
+      {prompt:"¿Cuál de las siguientes es una afirmación científicamente responsable sobre plasticidad?",options:["\"Puedes reprogramar tu cerebro por completo en 21 días.\"","\"El cerebro puede modificar ciertos circuitos con la práctica, dentro de límites biológicos.\"","\"La plasticidad no tiene ningún límite.\"","\"Solo los niños tienen plasticidad cerebral.\""],correct:"1",explain:"La formulación responsable reconoce el cambio real pero acotado, sin absolutos en ninguna dirección."}
+    ]
+  })}
+  <div class="next-lesson" style="border:none; padding:0; margin-top:1rem;"><a class="btn btn-primary" href="#/evaluacion">IR AL PLAN SEP / RVOE →</a></div>
+`}
+];
+
+const UNITS={
+  u1:{key:"u1",label:"Unidad 1",name:"Genética humana",lessons:U1},
+  u2:{key:"u2",label:"Unidad 2",name:"Bases materiales de la herencia",lessons:U2},
+  u3:{key:"u3",label:"Unidad 3",name:"Embriología general",lessons:U3},
+  u4:{key:"u4",label:"Unidad 4",name:"Desarrollo del sistema nervioso",lessons:U4}
+};
+
+const NEUROMITOS=[
+  {afirmacion:"Solo utilizamos el 10% del cerebro.",porque:"Es una cifra fácil de recordar y sugiere un enorme potencial oculto por descubrir.",plausible:"No toda la actividad cerebral es visible o medible de la misma forma en todo momento con las técnicas disponibles.",evidencia:"Los estudios de neuroimagen muestran actividad distribuida en prácticamente todo el cerebro a lo largo del tiempo, aunque no toda la corteza esté activa al máximo en un instante dado.",cierto:"En un momento puntual, no todas las regiones están funcionando a su capacidad máxima simultáneamente — pero eso no equivale a un 90% inactivo o \"sin usar\".",version:"Utilizamos prácticamente todo el cerebro, aunque distintas regiones se activan con distinta intensidad según la tarea y el momento."},
+  {afirmacion:"Eres de cerebro derecho o de cerebro izquierdo.",porque:"Es cierto que existe cierta lateralización funcional (por ejemplo, el lenguaje suele depender más del hemisferio izquierdo en la mayoría de las personas), lo que hace creíble la generalización.",plausible:"La lateralización funcional real de ciertas funciones específicas.",evidencia:"Los estudios de conectividad muestran que ambos hemisferios cooperan extensamente en la mayoría de las tareas; no existe evidencia de personas \"dominadas\" por un hemisferio que determine su personalidad o estilo cognitivo.",cierto:"Existe lateralización funcional para tareas específicas, no para \"tipos\" globales de persona.",version:"Ciertas funciones muestran lateralización parcial, pero ambos hemisferios cooperan de forma integrada en la mayoría de los procesos cognitivos; no existen \"personas de cerebro derecho o izquierdo\"."},
+  {afirmacion:"Cada persona tiene un estilo de aprendizaje neurológico (visual, auditivo, kinestésico).",porque:"Las personas sí reportan preferencias subjetivas por cómo reciben información, lo que hace intuitiva la idea de estilos fijos.",plausible:"Las preferencias subjetivas de aprendizaje existen y pueden influir en la motivación.",evidencia:"Los estudios que comparan el aprendizaje efectivo cuando se enseña según el \"estilo preferido\" de una persona no encuentran, en general, mejoras consistentes en el aprendizaje real.",cierto:"Las personas tienen preferencias subjetivas, y variar los formatos de enseñanza puede ser útil por otras razones (motivación, accesibilidad).",version:"Las preferencias de aprendizaje existen a nivel subjetivo, pero no hay evidencia sólida de que enseñar según el \"estilo neurológico\" preferido mejore el aprendizaje de forma consistente."},
+  {afirmacion:"Un hábito se forma exactamente en 21 días.",porque:"Es una cifra simple, memorable y motivadora para quien busca cambiar una conducta.",plausible:"Formar un hábito sí requiere repetición sostenida en el tiempo.",evidencia:"Los estudios sobre formación de hábitos muestran una variación considerable —desde semanas hasta varios meses— dependiendo de la conducta, la persona y el contexto.",cierto:"La repetición constante es un componente real del proceso de formación de hábitos.",version:"La formación de un hábito requiere repetición sostenida, pero el tiempo necesario varía ampliamente según la conducta y la persona; no existe un número fijo de días válido para todos los casos."},
+  {afirmacion:"La neuroplasticidad permite reprogramar completamente el cerebro.",porque:"Combina un término científico legítimo con la promesa atractiva de un cambio total y controlable.",plausible:"El sistema nervioso efectivamente cambia en respuesta a la experiencia a lo largo de toda la vida.",evidencia:"La evidencia muestra cambios plásticos reales pero acotados por variables como edad, región, tipo, duración e intensidad de la experiencia — no una reprogramación total y sin límites.",cierto:"El cerebro cambia con la experiencia; ese cambio es real y medible en muchos contextos.",version:"La neuroplasticidad permite cambios reales pero limitados en la estructura y función del sistema nervioso, sujetos a condiciones biológicas específicas — no una reprogramación completa a voluntad."}
+];
+
+/* Biblioteca (recursos por confirmar — sin URLs inventadas) */
+const LIBRARY=[
+  {cat:"Genética",title:"Material de referencia sobre genética humana básica",note:"Recurso institucional por confirmar."},
+  {cat:"Biología molecular",title:"Recurso interactivo sobre replicación del ADN",note:"UNAM — enlace verificado pendiente de incorporación."},
+  {cat:"Embriología",title:"Atlas o recurso institucional de desarrollo embrionario humano",note:"Recurso institucional por confirmar."},
+  {cat:"Desarrollo neural",title:"Material sobre neurulación y formación del tubo neural",note:"Recurso institucional por confirmar."},
+  {cat:"Neuroplasticidad",title:"Revisión académica sobre tipos y límites de la plasticidad",note:"Recurso institucional por confirmar."},
+  {cat:"Neuromitos",title:"Compilación de neuromitos frecuentes en educación",note:"Recurso institucional por confirmar."}
+];
+
+const SEP_PLAN=[
+  {ev:"Síntesis académica",mod:"Docente",prod:"Documento",unit:"U1",pct:20},
+  {ev:"Foro argumentado",mod:"Docente",prod:"Classroom",unit:"U4",pct:15},
+  {ev:"Infografía",mod:"Docente",prod:"Canva",unit:"U4",pct:20},
+  {ev:"Mapa conceptual",mod:"Independiente",prod:"Canva",unit:"U1–U3",pct:15},
+  {ev:"Investigación",mod:"Independiente",prod:"Mentimeter / ficha",unit:"U4",pct:15},
+  {ev:"Reflexión + autoevaluación",mod:"Independiente",prod:"Documento + Forms",unit:"U4",pct:15}
+];
+const HOURS=[
+  {u:"U1",doc:6,ind:9},{u:"U2",doc:9,ind:13},{u:"U3",doc:8,ind:12},{u:"U4",doc:9,ind:14}
+];
+
+const NAV=[
+  {label:"Inicio",route:"#/inicio"},
+  {label:"Unidad 1",route:"#/u1/0"},
+  {label:"Unidad 2",route:"#/u2/0"},
+  {label:"Unidad 3",route:"#/u3/0"},
+  {label:"Unidad 4",route:"#/u4/0"},
+  {label:"Neuromitos",route:"#/neuromitos"},
+  {label:"Biblioteca",route:"#/biblioteca"},
+  {label:"Plan SEP/RVOE",route:"#/evaluacion"}
+];
+function buildNav(){
+  const p=document.getElementById("primaryNav"), m=document.getElementById("mobileNav");
+  p.innerHTML=NAV.map(n=>`<a href="${n.route}" data-route-prefix="${n.route.split('/')[1]}">${n.label}</a>`).join("");
+  m.innerHTML=NAV.map(n=>`<a href="${n.route}" data-route-prefix="${n.route.split('/')[1]}">${n.label}</a>`).join("");
+}
+
+function totalLessons(){return U1.length+U2.length+U3.length+U4.length;}
+function completedCount(){let c=0;Object.keys(progress).forEach(k=>{if(progress[k])c++;});return c;}
+function updateProgressChip(){const pct=Math.round((completedCount()/totalLessons())*100);document.getElementById("progressChipPct").textContent=pct+"%";}
+
+function renderHome(){
+  return `
+  <section class="hero wrap route-fade">
+    <div>
+      <div class="eyebrow-word">LIH 704 · Séptimo cuatrimestre · 5 créditos</div>
+      <h1>El sistema nervioso cambia.</h1>
+      <p class="sub">La pregunta científica es cómo, cuándo y con qué límites.</p>
+      <p class="body">El cerebro humano no aparece completamente formado al nacimiento ni permanece inmutable durante toda la vida. Genes, desarrollo, ambiente y experiencia participan en la construcción y modificación del sistema nervioso.</p>
+      <p class="body">Comprender la neuroplasticidad requiere primero comprender de dónde provienen las células, cómo se expresa la información genética, cómo se desarrolla el sistema nervioso y cómo sus circuitos responden posteriormente a la experiencia.</p>
+      <div class="cta-row"><a class="btn btn-primary" href="#/u1/0">COMENZAR EL RECORRIDO</a><a class="btn btn-ghost" href="#/u4/0">EXPLORAR EL SISTEMA NERVIOSO</a></div>
+    </div>
+    <div>${imgPlaceholder({desc:"microscopía de tejido neural / neuronas teñidas",alt:"Micrografía de neuronas y tejido neural",pie:"Imagen científica ilustrativa del tejido nervioso"})}</div>
+  </section>
+
+  <section class="section band-alt">
+    <div class="wrap">
+      <div class="official-objective">
+        <span class="lbl">Objetivo general</span>
+        <p>Analizar los elementos genéticos y biológicos relacionados con el desarrollo del sistema nervioso y la plasticidad neuronal, mediante el estudio de la genética humana, la estructura y expresión del material genético, la embriología y los procesos de formación y organización del sistema nervioso, para comprender los factores que intervienen en el desarrollo y la capacidad de adaptación del sistema nervioso humano.</p>
+      </div>
+      <div class="course-meta">
+        <div><div class="k">Clave</div><div class="v">LIH 704</div></div>
+        <div><div class="k">Cuatrimestre</div><div class="v">Séptimo</div></div>
+        <div><div class="k">Modalidad</div><div class="v">No escolarizada</div></div>
+        <div><div class="k">Hrs. docentes</div><div class="v">32</div></div>
+        <div><div class="k">Hrs. independientes</div><div class="v">48</div></div>
+        <div><div class="k">Créditos</div><div class="v">5</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head"><p class="kicker">Mapa del curso</p><h2>Genes ↔ ambiente → desarrollo → sistema nervioso → experiencia → plasticidad</h2></div>
+      ${flow(CURRICULUM_MAP)}
+      <p style="color:var(--ink-soft); font-size:.94rem;">Ambiente / experiencia ↔ expresión / desarrollo / circuitos — la relación es de influencia mutua, no una cadena estrictamente determinista en una sola dirección.</p>
+    </div>
+  </section>
+
+  <section class="section band-alt">
+    <div class="wrap">
+      <div class="section-head"><p class="kicker">Unidades</p><h2>De la molécula al circuito</h2></div>
+      <div class="grid-4">
+        ${["u1","u2","u3","u4"].map(k=>{
+          const u=UNITS[k]; const done=u.lessons.filter(l=>progress[k+"__"+l.id]).length;
+          return `<a class="unit-card" href="#/${k}/0"><span class="un">${u.label}</span><h3>${u.name}</h3><p style="color:var(--ink-soft); font-size:.9rem; margin:0;">${u.lessons.length} lecciones</p><div class="u-progress">${done} / ${u.lessons.length} completadas</div></a>`;
+        }).join("")}
+      </div>
+    </div>
+  </section>
+
+  <section class="section band-ink">
+    <div class="wrap" style="max-width:760px;">
+      <p class="kicker">Principio del sitio</p>
+      <h2>Este no es un sitio de divulgación sobre "cómo reprogramar tu cerebro".</h2>
+      <p>Funciona como libro universitario digital: guía de estudio, laboratorio conceptual y sistema de evidencias, con la profundidad que exige una asignatura de 80 horas.</p>
+      <a class="btn btn-on-dark" href="#/neuromitos">Ver el laboratorio de neuromitos →</a>
+    </div>
+  </section>`;
+}
+
+function renderUnit(unitKey, idx){
+  const u=UNITS[unitKey], lessons=u.lessons;
+  idx=Math.max(0,Math.min(idx,lessons.length-1));
+  const lesson=lessons[idx], pKey=unitKey+"__"+lesson.id, isDone=!!progress[pKey];
+  const prev=lessons[idx-1], next=lessons[idx+1];
+  const nextUnit={u1:"#/u2/0",u2:"#/u3/0",u3:"#/u4/0",u4:"#/evaluacion"};
+  const rail=lessons.map((l,i)=>{const done=!!progress[unitKey+"__"+l.id];return `<li><button data-goto="#/${unitKey}/${i}" class="${i===idx?'current ':''}${done?'done':''}"><span class="dot"></span>${l.short}</button></li>`;}).join("");
+  return `
+  <section class="hero lesson wrap route-fade">
+    <div class="breadcrumb"><a href="#/${unitKey}/0">${u.label}</a> / ${lesson.short}</div>
+    <span class="unit-tag">${u.label} · ${u.name}</span>
+    <h1 class="lesson-title">${lesson.title}</h1>
+  </section>
+  <section class="wrap" style="padding-bottom:4rem;">
+    <div class="lesson-layout">
+      <aside class="lesson-rail"><h5>Lecciones de la unidad</h5><ul class="rail-list">${rail}</ul></aside>
+      <div class="lesson-body">
+        ${lesson.body}
+        <div class="next-lesson">
+          <label class="mark-complete"><input type="checkbox" data-progress="${pKey}" ${isDone?"checked":""}> Marcar como revisado</label>
+          <div style="display:flex; gap:1.4rem; flex-wrap:wrap;">
+            ${prev?`<div class="side"><small>Anterior</small><a data-goto="#/${unitKey}/${idx-1}" href="#/${unitKey}/${idx-1}">← ${prev.short}</a></div>`:""}
+            ${next?`<div class="side right"><small>Siguiente</small><a data-goto="#/${unitKey}/${idx+1}" href="#/${unitKey}/${idx+1}">${next.short} →</a></div>`:`<div class="side right"><small>Unidad completa</small><a href="${nextUnit[unitKey]}">${unitKey==='u4'?'Ir al plan SEP/RVOE →':'Siguiente unidad →'}</a></div>`}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>`;
+}
+
+function renderNeuromitos(){
+  return `
+  <section class="section wrap route-fade">
+    <div class="section-head"><p class="kicker">Laboratorio de neuromitos</p><h2>Cinco afirmaciones bajo lupa</h2><p class="lede">Cada mito recibe el mismo tratamiento: afirmación, por qué resulta atractiva, qué evidencia existe, qué parte es cierta, y una versión científicamente responsable.</p></div>
+    ${NEUROMITOS.map(n=>neuromitoBajoLupa(n)).join("")}
+
+    <h2 style="margin-top:3rem;">¿Neurociencia o neurodecoración?</h2>
+    <p class="lede" style="color:var(--ink-soft); max-width:660px;">Clasifica cada frase comercial. Después de elegir, compara tu respuesta con la explicación.</p>
+    <div id="neurodecoList"></div>
+  </section>`;
+}
+
+const NEURODECO=[
+  {frase:"Activa tu cerebro derecho.",cat:"Marketing",exp:"Se apoya en el mito de dominancia hemisférica. No corresponde a un mecanismo neurocientífico establecido."},
+  {frase:"Reprograma tus conexiones neuronales.",cat:"Simplificación / Marketing",exp:"Usa el lenguaje de la plasticidad sináptica real, pero exagera el alcance y la velocidad del cambio posible."},
+  {frase:"Aprende según tu estilo cerebral.",cat:"Pseudociencia",exp:"Se basa en la idea de estilos de aprendizaje neurológicos fijos, no respaldada consistentemente por la evidencia."},
+  {frase:"Eleva tu neurofrecuencia.",cat:"Pseudociencia",exp:"\"Neurofrecuencia\" no corresponde a un concepto validado en neurociencia; combina terminología científica con lenguaje esotérico."},
+  {frase:"Entrena tu cerebro.",cat:"Simplificación",exp:"Puede describir de forma razonable ciertas prácticas (por ejemplo, entrenamiento cognitivo específico), aunque el término se usa frecuentemente de forma vaga en publicidad."}
+];
+
+function renderBiblioteca(){
+  return `
+  <section class="section wrap route-fade">
+    <div class="section-head"><p class="kicker">Biblioteca</p><h2>Recursos por categoría</h2><p class="lede">Los recursos institucionales verificados se incorporarán conforme se confirmen sus enlaces oficiales; no se inventan referencias ni URLs.</p></div>
+    <div class="grid-2">
+      ${LIBRARY.map(r=>`<div class="card"><span class="icon">📚</span><h3>${r.cat}</h3><p style="font-weight:600; color:var(--ink); margin-bottom:.3rem;">${r.title}</p><p>${r.note}</p></div>`).join("")}
+    </div>
+  </section>`;
+}
+
+function renderEvaluacion(){
+  const total=SEP_PLAN.reduce((a,b)=>a+b.pct,0);
+  const totalDoc=HOURS.reduce((a,b)=>a+b.doc,0), totalInd=HOURS.reduce((a,b)=>a+b.ind,0);
+  const colors=["#1F5C6B","#4C8563","#AD7C24","#1C3A57"];
+  return `
+  <section class="section wrap route-fade">
+    <div class="section-head"><p class="kicker">Plan SEP / RVOE</p><h2>Evidencias, ponderación y horas</h2></div>
+    <div class="tbl-wrap"><div class="tbl"><table>
+      <thead><tr><th>Evidencia</th><th>Modalidad</th><th>Producto</th><th>Unidad</th><th style="text-align:right;">%</th></tr></thead>
+      <tbody>
+        ${SEP_PLAN.map(s=>`<tr><td>${s.ev}</td><td>${s.mod}</td><td>${s.prod}</td><td>${s.unit}</td><td class="wt">${s.pct}%</td></tr>`).join("")}
+        <tr><td colspan="4" style="font-family:var(--font-head); font-weight:700;">Total</td><td class="wt">${total}%</td></tr>
+      </tbody>
+    </table></div></div>
+
+    <h3 style="margin-top:2.5rem;">Distribución de horas</h3>
+    <div class="hours-bar">${HOURS.map((h,i)=>`<div style="flex:${h.doc+h.ind}; background:${colors[i]};">${h.u}: ${h.doc+h.ind}h</div>`).join("")}</div>
+    <div class="tbl-wrap"><div class="tbl"><table>
+      <thead><tr><th>Unidad</th><th style="text-align:right;">Horas docentes</th><th style="text-align:right;">Horas independientes</th><th style="text-align:right;">Total</th></tr></thead>
+      <tbody>
+        ${HOURS.map(h=>`<tr><td>${h.u}</td><td class="wt">${h.doc}</td><td class="wt">${h.ind}</td><td class="wt">${h.doc+h.ind}</td></tr>`).join("")}
+        <tr><td style="font-family:var(--font-head); font-weight:700;">Total</td><td class="wt">${totalDoc}</td><td class="wt">${totalInd}</td><td class="wt">${totalDoc+totalInd}</td></tr>
+      </tbody>
+    </table></div></div>
+
+    <h3 style="margin-top:2.5rem;">Trazabilidad</h3>
+    ${chain(["Objetivo general","Contenido registrado","Desarrollo académico","Actividad","Evidencia","Criterio"])}
+    <p style="color:var(--ink-soft); font-size:.94rem; max-width:660px;">Los contenidos oficiales del programa no se modifican silenciosamente. Cuando una corrección académica es necesaria — por ejemplo, la terminología «Watson y Crick» frente a la expresión registrada en algunos materiales institucionales — se indica de forma explícita la fuente original y se enseña la forma académicamente correcta, sin ocultar la discrepancia.</p>
+  </section>`;
+}
+
+const ROUTES={
+  inicio:()=>renderHome(),
+  neuromitos:()=>renderNeuromitos(),
+  biblioteca:()=>renderBiblioteca(),
+  evaluacion:()=>renderEvaluacion()
+};
+
+function parseHash(){let h=location.hash; if(h.charAt(0)==="#")h=h.slice(1); if(h.charAt(0)==="/")h=h.slice(1); if(!h)h="inicio"; return h.split("/");}
+
+function afterRenderHooks(routeKey,parts){
+  document.querySelectorAll('nav a').forEach(a=>a.classList.toggle('active',a.getAttribute('data-route-prefix')===routeKey));
+
+  if(routeKey==="neuromitos"){
+    const el=document.getElementById("neurodecoList");
+    el.innerHTML=NEURODECO.map((n,i)=>`<div class="quiz-q" data-quiz="nd-${i}" data-correct="${n.cat}">
+      <p style="font-weight:600; margin-bottom:.6rem;">«${n.frase}»</p>
+      ${["Concepto científico","Simplificación","Marketing","Pseudociencia","No hay suficiente información"].map(c=>`<label class="opt"><input type="radio" name="nd-${i}" value="${c}"> ${c}</label>`).join("")}
+      <div class="fb" style="display:none;">${n.exp}</div>
+    </div>`).join("");
+    el.querySelectorAll('.quiz-q').forEach(q=>{
+      q.querySelectorAll('input').forEach(r=>r.addEventListener('change',()=>{ q.querySelector('.fb').style.display='block'; }));
+    });
+  }
+
+  if(["u1","u2","u3","u4"].includes(parts[0])){
+    document.querySelectorAll('.rail-list [data-goto]').forEach(btn=>btn.addEventListener("click",()=>{location.hash=btn.getAttribute("data-goto");}));
+    const cb=document.querySelector('[data-progress]');
+    if(cb){
+      cb.addEventListener("change",()=>{
+        const key=cb.getAttribute("data-progress");
+        progress[key]=cb.checked; saveP(progress); updateProgressChip();
+        render();
+        location.hash="#/"+parts[0]+"/"+(parts[1]||0);
+      });
+    }
+    initAccordions(); initTabs(); initClassify(); initQuiz(); initMutationLab(); initNucleotideDemo(); initClickableFlow();
+  }
+
+  window.scrollTo({top:0,behavior:"auto"});
+}
+
+function render(){
+  const parts=parseHash(), key=parts[0], main=document.getElementById("main");
+  if(["u1","u2","u3","u4"].includes(key)){
+    const idx=parseInt(parts[1]||"0",10)||0;
+    main.innerHTML=renderUnit(key,idx);
+  } else if(ROUTES[key]){
+    main.innerHTML=ROUTES[key]();
+  } else {
+    main.innerHTML=ROUTES.inicio();
+  }
+  updateProgressChip();
+  afterRenderHooks(key,parts);
+  document.getElementById("mobileNav").classList.remove("open");
+  document.getElementById("hamburgerBtn").setAttribute("aria-expanded","false");
+}
+
+buildNav();
+window.addEventListener("hashchange",render);
+document.getElementById("hamburgerBtn").addEventListener("click",()=>{
+  const nav=document.getElementById("mobileNav");
+  const open=nav.classList.toggle("open");
+  document.getElementById("hamburgerBtn").setAttribute("aria-expanded",open?"true":"false");
+});
+render();
+})();
+</script>
+</body>
+</html>
